@@ -8,7 +8,7 @@ before_install:
       gem install hiptest-publisher;
     fi;
   - echo "sauce.user=$SAUCE_USER" > local.properties && echo "sauce.sauceAccessKey=$SAUCE_ACCESSKEY" >> local.properties
-script: mvn -B verify -Dvaadin.proKey=$VAADIN_PRO_KEY -Dvaadin.productionMode -Dcom.vaadin.testbench.Parameters.testsInParallel=2
+script: mvn -B verify -Dvaadin.proKey=$VAADIN_PRO_KEY -P bower -DskipFrontend -Dcom.vaadin.testbench.Parameters.testsInParallel=2
 after_script:
   - if [[ $TRAVIS_PULL_REQUEST == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
         sh publishHiptestResults.sh $HIPTEST_SECRET $HIPTEST_TEST_RUN;
