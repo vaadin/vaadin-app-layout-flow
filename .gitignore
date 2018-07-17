@@ -1,0 +1,6 @@
+target/
+.idea/
+*.iml
+vaadin-app-layout-integration-tests/error-screenshots/
+**/build-tools/
+**/bower_components/
