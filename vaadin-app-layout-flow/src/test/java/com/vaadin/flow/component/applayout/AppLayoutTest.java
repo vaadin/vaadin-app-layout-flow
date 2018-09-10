@@ -185,8 +185,6 @@ public class AppLayoutTest {
         Element content = new Div().getElement();
         systemUnderTest.setContent(content);
 
-        Assert.assertEquals("main", content.getAttribute("role"));
-
         List<Element> children = systemUnderTest.getElement().getChildren()
                 .collect(Collectors.toList());
         Assert.assertTrue(children.contains(content));
