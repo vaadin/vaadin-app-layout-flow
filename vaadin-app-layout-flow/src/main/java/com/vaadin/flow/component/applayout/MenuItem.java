@@ -55,10 +55,19 @@ public abstract class MenuItem extends Tab {
         setListener(listener);
     }
 
+    /**
+     * Returns icon
+     */
     public Component getIcon() {
         return icon;
     }
 
+    /**
+     * Sets icon
+     *
+     * @param icon
+     *            Icon to display in MenuItem
+     */
     public void setIcon(Component icon) {
         removeAll();
 
@@ -74,10 +83,19 @@ public abstract class MenuItem extends Tab {
         this.icon = icon;
     }
 
+    /**
+     * Returns displayed MenuItem title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets MenuItem title
+     *
+     * @param title
+     *            the displayed title of MenuItem
+     */
     public void setTitle(String title) {
         removeAll();
 
