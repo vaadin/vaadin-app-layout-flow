@@ -20,7 +20,7 @@ package com.vaadin.flow.component.applayout;
 import com.vaadin.flow.component.ComponentEvent;
 
 /**
- * Event fired after MenuItem is selected
+ * Event fired after MenuItem is clicked
  */
 public class MenuItemClickEvent extends ComponentEvent<MenuItem> {
 

@@ -35,18 +35,48 @@ public abstract class MenuItem extends Tab {
     private ComponentEventListener<MenuItemClickEvent> listener;
     private Registration listenerRegistration;
 
+    /**
+     * Constructs a new object with the given title.
+     *
+     * @param title
+     *            the title to display
+     */
     public MenuItem(String  title) {
         this(null, title);
     }
 
+    /**
+     * Constructs a new object with the given icon.
+     *
+     * @param icon
+     *            the icon to display
+     */
     public MenuItem(Component icon) {
         this(icon, null);
     }
 
+    /**
+     * Constructs a new object with the given icon and title.
+     *
+     * @param icon
+     *            the icon to display
+     * @param title
+     *            the title to display
+     */
     public MenuItem(Component icon, String title) {
         this(icon, title, null);
     }
 
+    /**
+     * Constructs a new object with the given icon, title and click listener.
+     *
+     * @param icon
+     *            the icon to display
+     * @param title
+     *            the title to display
+     * @param listener
+     *            the menu item click listener
+     */
     protected MenuItem(Component icon,
                        String title,
                        ComponentEventListener<MenuItemClickEvent> listener) {
