@@ -81,7 +81,7 @@ public class AppLayout extends Component {
      * Sets the element into branding area
      *
      * @param branding
-     *            Element to set into branding slot
+     *            the element to set into branding area
      */
     public void setBranding(Element branding) {
         Objects.requireNonNull(branding, "Branding cannot be null");
@@ -95,7 +95,7 @@ public class AppLayout extends Component {
     }
 
     /**
-     * Clears the branding slot
+     * Clears the branding area
      */
     public void removeBranding() {
         if (this.branding == null) {
