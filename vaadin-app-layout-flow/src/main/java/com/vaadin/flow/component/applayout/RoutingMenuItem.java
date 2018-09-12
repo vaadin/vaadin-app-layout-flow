@@ -24,6 +24,7 @@ import java.util.Objects;
 
 /**
  * A menu item for navigation.
+ * Navigation happens only when selection was fired from a client side.
  */
 public class RoutingMenuItem extends MenuItem {
 
@@ -61,13 +62,18 @@ public class RoutingMenuItem extends MenuItem {
      * @param title
      *            the title to display
      * @param route
-     *            the route to navigate on click
+     *            the route to navigate on the tab click
      */
     public RoutingMenuItem(Component icon, String title, String route) {
         super(icon, title);
 
         setRoute(route);
-        setListener(event -> UI.getCurrent().navigate(this.route));
+        setListener(event -> {
+            if (!event.isFromClient()) {
+                return;
+            }
+            UI.getCurrent().navigate(this.route);
+        });
     }
 
     /**
