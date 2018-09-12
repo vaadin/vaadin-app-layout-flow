@@ -1,5 +1,6 @@
 package com.vaadin.flow.component.applayout.test;
 
+import com.vaadin.flow.component.applayout.examples.Page1;
 import com.vaadin.flow.component.applayout.testbench.AppLayoutElement;
 import com.vaadin.flow.component.applayout.testbench.MenuItemElement;
 import com.vaadin.flow.component.notification.testbench.NotificationElement;
@@ -104,5 +105,16 @@ public class AppLayoutIT extends AbstractParallelTest {
                 $(AppLayoutElement.class).waitForFirst().getContent().getText());
 
         Assert.assertNotEquals(initialSelectionTitle, selectionTitleAfterActionClick);
+    }
+
+    @Test
+    public void initialSelectedMenu() {
+        open(Page1.class, WINDOW_SIZE_MEDIUM);
+
+        Assert.assertEquals("Page 1",
+                $(AppLayoutElement.class).waitForFirst().getSelectedMenuItem().getTitle());
+
+        Assert.assertEquals("This is Page 1",
+                $(AppLayoutElement.class).waitForFirst().getContent().getText());
     }
 }
