@@ -82,7 +82,9 @@ public class AppLayout extends Component {
     }
 
     private void unregisterChangeListener() {
-        selectedChangeRegistration.remove();
+        if (selectedChangeListener != null) {
+            selectedChangeRegistration.remove();
+        }
         selectedChangeRegistration = null;
     }
 
