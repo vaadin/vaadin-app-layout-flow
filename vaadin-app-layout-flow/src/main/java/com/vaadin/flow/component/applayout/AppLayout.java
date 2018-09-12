@@ -46,6 +46,7 @@ public class AppLayout extends Component {
 
     private final ComponentEventListener<Tabs.SelectedChangeEvent> selectedChangeListener;
     private Registration selectedChangeRegistration;
+    private boolean firstSelection = true;
 
     /**
      * Initializes a new app layout with a default menu.
@@ -57,6 +58,12 @@ public class AppLayout extends Component {
         getElement().appendChild(menuTabs.getElement());
 
         selectedChangeListener = event -> {
+            // Ignore first selection made automatically by Tabs on first item added
+            // https://github.com/vaadin/vaadin-tabs-flow/issues/76
+            if (firstSelection) {
+                firstSelection = false;
+                return;
+            }
             final MenuItem selectedTab = (MenuItem) menuTabs.getSelectedTab();
 
             if (selectedTab instanceof ActionMenuItem) {
@@ -176,6 +183,14 @@ public class AppLayout extends Component {
         setSelectedMenuItem(menuItem, false);
     }
 
+    /**
+     * Selects a menu item.
+     *
+     * @param menuItem
+     *              Item to select
+     * @param preventDefault
+     *              Whether to skip the action execution on tab selection or not
+     */
     public void setSelectedMenuItem(MenuItem menuItem, boolean preventDefault) {
         if (preventDefault) {
             unregisterChangeListener();
