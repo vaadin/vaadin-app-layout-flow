@@ -48,7 +48,11 @@ public class AbstractAppRouterLayoutTest {
 
     @Before
     public void setup() {
-        systemUnderTest = new TestAppRouterLayout();
+        systemUnderTest = Mockito.spy(new TestAppRouterLayout());
+
+        // "Replace" the app layout with a spy for testing.
+        Mockito.when(systemUnderTest.getAppLayout())
+                .thenReturn(Mockito.spy(new AppLayout()));
     }
 
     @Test
@@ -81,6 +85,11 @@ public class AbstractAppRouterLayoutTest {
                 systemUnderTest.getAppLayout().getSelectedMenuItem());
         Assert.assertEquals(route1.getElement(),
                 systemUnderTest.getAppLayout().getContent());
+
+        // Ensure that selection is called with preventDefault = true
+        // This means a subsequent routing will not be triggered when routing into a menu item
+        Mockito.verify(systemUnderTest.getAppLayout(), Mockito.times(1))
+                .setSelectedMenuItem(route1MenuItem, true);
 
         // Simulate navigation to Route2 (which has no matching menu item)
         systemUnderTest.showRouterLayoutContent(new Route2());
