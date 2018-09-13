@@ -66,6 +66,11 @@ public class AppLayout extends Component {
             }
             final MenuItem selectedTab = (MenuItem) menuTabs.getSelectedTab();
 
+            if (selectedTab == null) {
+                selectedMenuItem = null;
+                return;
+            }
+
             if (selectedTab instanceof ActionMenuItem) {
                 // Do not set actions (such as logout) as selected.
                 menuTabs.getChildren()

@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -169,20 +170,20 @@ public class AppLayoutTest {
         RoutingMenuItem profile = new RoutingMenuItem("Profile", "profile");
         systemUnderTest.addMenuItem(profile);
 
-        ActionMenuItem logout = new ActionMenuItem("Logout");
+        AtomicBoolean logoutClicked = new AtomicBoolean(false);
+        ActionMenuItem logout = new ActionMenuItem(null, "Logout",
+                e -> logoutClicked.set(true));
         systemUnderTest.addMenuItem(logout);
 
         systemUnderTest.onAttach(new AttachEvent(systemUnderTest, false));
 
-        Assert.assertFalse(
-                systemUnderTest.getMenu().getElement().hasProperty("selected"));
-
         systemUnderTest.selectMenuItem(profile);
 
-        // Behavior of an ActionMenuItem selection cannot be unit-tested
-        // because Tabs for Flow doesn't trigger the selection server-side.
         Assert.assertEquals("1",
                 systemUnderTest.getMenu().getElement().getProperty("selected"));
+
+        systemUnderTest.selectMenuItem(logout);
+        Assert.assertTrue(logoutClicked.get());
     }
 
     @Test

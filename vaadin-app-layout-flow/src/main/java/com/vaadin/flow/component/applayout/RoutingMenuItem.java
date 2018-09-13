@@ -67,7 +67,11 @@ public class RoutingMenuItem extends MenuItem {
         super(icon, title);
 
         setRoute(route);
-        setListener(event -> UI.getCurrent().navigate(this.route));
+        setListener(event -> {
+            if (UI.getCurrent() != null) {
+                UI.getCurrent().navigate(this.route);
+            }
+        });
     }
 
     /**
