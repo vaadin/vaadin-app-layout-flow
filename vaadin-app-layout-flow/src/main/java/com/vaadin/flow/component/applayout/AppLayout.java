@@ -20,10 +20,12 @@ package com.vaadin.flow.component.applayout;
 import com.helger.commons.annotation.VisibleForTesting;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.shared.Registration;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -42,6 +44,10 @@ public class AppLayout extends Component {
     private MenuItem selectedMenuItem;
     private final Tabs menuTabs;
 
+    private final ComponentEventListener<Tabs.SelectedChangeEvent> selectedChangeListener;
+    private Registration selectedChangeRegistration;
+    private boolean firstSelection = true;
+
     /**
      * Initializes a new app layout with a default menu.
      */
@@ -51,8 +57,19 @@ public class AppLayout extends Component {
         menuTabs.getElement().setAttribute("theme", "minimal");
         getElement().appendChild(menuTabs.getElement());
 
-        menuTabs.addSelectedChangeListener(event -> {
+        selectedChangeListener = event -> {
+            // Ignore first selection made automatically by Tabs on first item added
+            // https://github.com/vaadin/vaadin-tabs-flow/issues/76
+            if (firstSelection) {
+                firstSelection = false;
+                return;
+            }
             final MenuItem selectedTab = (MenuItem) menuTabs.getSelectedTab();
+
+            if (selectedTab == null) {
+                selectedMenuItem = null;
+                return;
+            }
 
             if (selectedTab instanceof ActionMenuItem) {
                 // Do not set actions (such as logout) as selected.
@@ -60,14 +77,27 @@ public class AppLayout extends Component {
                         .map(MenuItem.class::cast)
                         .filter(e -> e == selectedMenuItem)
                         .findFirst()
-                        .ifPresent(this::selectMenuItem);
+                        .ifPresent(item -> setSelectedMenuItem(item, true));
             } else {
                 selectedMenuItem = selectedTab;
             }
 
             selectedTab.getListener().onComponentEvent(
                     new MenuItemClickEvent(selectedTab, event.isFromClient()));
-        });
+        };
+
+        registerChangeListener();
+    }
+
+    private void registerChangeListener() {
+        selectedChangeRegistration = menuTabs.addSelectedChangeListener(selectedChangeListener);
+    }
+
+    private void unregisterChangeListener() {
+        if (selectedChangeListener != null) {
+            selectedChangeRegistration.remove();
+        }
+        selectedChangeRegistration = null;
     }
 
     @Override
@@ -155,8 +185,28 @@ public class AppLayout extends Component {
      * Selects a menu item.
      */
     public void selectMenuItem(MenuItem menuItem) {
+        setSelectedMenuItem(menuItem, false);
+    }
+
+    /**
+     * Selects a menu item.
+     *
+     * @param menuItem
+     *              Item to select
+     * @param preventDefault
+     *              Whether to skip the action execution on tab selection or not
+     */
+    public void setSelectedMenuItem(MenuItem menuItem, boolean preventDefault) {
+        if (preventDefault) {
+            unregisterChangeListener();
+        }
+
         menuTabs.setSelectedTab(menuItem);
         selectedMenuItem = menuItem;
+
+        if (preventDefault) {
+            registerChangeListener();
+        }
     }
 
     /**
