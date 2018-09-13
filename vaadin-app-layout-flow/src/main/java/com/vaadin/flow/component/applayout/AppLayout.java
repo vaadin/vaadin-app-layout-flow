@@ -77,7 +77,7 @@ public class AppLayout extends Component {
                         .map(MenuItem.class::cast)
                         .filter(e -> e == selectedMenuItem)
                         .findFirst()
-                        .ifPresent(this::selectMenuItem);
+                        .ifPresent(item -> setSelectedMenuItem(item, true));
             } else {
                 selectedMenuItem = selectedTab;
             }

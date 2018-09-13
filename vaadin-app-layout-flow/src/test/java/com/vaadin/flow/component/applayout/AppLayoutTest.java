@@ -184,6 +184,10 @@ public class AppLayoutTest {
 
         systemUnderTest.selectMenuItem(logout);
         Assert.assertTrue(logoutClicked.get());
+
+        // Previously selected routing tab should remain selected
+        Assert.assertEquals("1",
+                systemUnderTest.getMenu().getElement().getProperty("selected"));
     }
 
     @Test
