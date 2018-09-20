@@ -39,42 +39,13 @@ public class AppLayout extends Component {
     private Element branding;
     private Element content;
 
-    private MenuItem selectedMenuItem;
-    private final Tabs menuTabs;
+    private final AppLayoutMenu menuTabs = new AppLayoutMenu();
 
     /**
      * Initializes a new app layout with a default menu.
      */
     public AppLayout() {
-        menuTabs = new Tabs();
-        menuTabs.getElement().setAttribute("slot", "menu");
-        menuTabs.getElement().setAttribute("theme", "minimal");
         getElement().appendChild(menuTabs.getElement());
-
-        menuTabs.addSelectedChangeListener(event -> {
-            final MenuItem selectedTab = (MenuItem) menuTabs.getSelectedTab();
-
-            if (selectedTab instanceof ActionMenuItem) {
-                // Do not set actions (such as logout) as selected.
-                menuTabs.getChildren()
-                        .map(MenuItem.class::cast)
-                        .filter(e -> e == selectedMenuItem)
-                        .findFirst()
-                        .ifPresent(this::selectMenuItem);
-            } else {
-                selectedMenuItem = selectedTab;
-            }
-
-            selectedTab.getListener().onComponentEvent(
-                    new MenuItemClickEvent(selectedTab, event.isFromClient()));
-        });
-    }
-
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        try {
-            selectedMenuItem = (MenuItem) menuTabs.getSelectedTab();
-        } catch (IllegalArgumentException noMenuItemPresent) { }
     }
 
     /**
@@ -148,15 +119,7 @@ public class AppLayout extends Component {
      * Gets the currently selected menu item.
      */
     public MenuItem getSelectedMenuItem() {
-        return selectedMenuItem;
-    }
-
-    /**
-     * Selects a menu item.
-     */
-    public void selectMenuItem(MenuItem menuItem) {
-        menuTabs.setSelectedTab(menuItem);
-        selectedMenuItem = menuItem;
+        return (MenuItem) menuTabs.getSelectedTab();
     }
 
     /**
