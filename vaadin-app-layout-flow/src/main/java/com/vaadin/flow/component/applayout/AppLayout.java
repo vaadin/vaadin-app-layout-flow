@@ -18,11 +18,9 @@ package com.vaadin.flow.component.applayout;
  */
 
 import com.helger.commons.annotation.VisibleForTesting;
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.Element;
 
 import java.util.Objects;
@@ -66,6 +64,12 @@ public class AppLayout extends Component {
     }
 
     /**
+     * Selects a menu item.
+     */
+    void selectMenuItem(AppLayoutMenuItem menuItem) {
+        menuTabs.selectMenuItem(menuItem);
+    }
+    /**
      * Clears the branding area
      */
     public void removeBranding() {
@@ -82,7 +86,7 @@ public class AppLayout extends Component {
      * Clears existing menu items and sets the new the arguments.
      * @param menuItems
      */
-    public void setMenuItems(MenuItem... menuItems) {
+    public void setMenuItems(AppLayoutMenuItem... menuItems) {
         menuTabs.removeAll();
         menuTabs.add(menuItems);
     }
@@ -93,33 +97,33 @@ public class AppLayout extends Component {
      * @param menuItem
      *              Menu Item to add
      */
-    public void addMenuItem(MenuItem menuItem) {
+    public void addMenuItem(AppLayoutMenuItem menuItem) {
         menuTabs.add(menuItem);
     }
 
     /**
      * Removes menu item from the menu
      */
-    public void removeMenuItem(MenuItem menuItem) {
+    public void removeMenuItem(AppLayoutMenuItem menuItem) {
         menuTabs.remove(menuItem);
     }
 
     /**
-     * Gets the first {@link RoutingMenuItem} targeting a route.
+     * Gets the first {@link AppLayoutMenuItem} targeting a route.
      */
-    Optional<MenuItem> getMenuItemTargetingRoute(String route) {
+    Optional<AppLayoutMenuItem> getMenuItemTargetingRoute(String route) {
+        Objects.requireNonNull(route,"Route can not be null");
         return menuTabs.getChildren()
-                .map(e -> (MenuItem) e)
-                .filter(e -> e instanceof RoutingMenuItem)
-                .filter(e -> ((RoutingMenuItem) e).getRoute().equals(route))
+                .map(e -> (AppLayoutMenuItem) e)
+                .filter(e -> route.equals(e.getRoute()))
                 .findFirst();
     }
 
     /**
      * Gets the currently selected menu item.
      */
-    public MenuItem getSelectedMenuItem() {
-        return (MenuItem) menuTabs.getSelectedTab();
+    public AppLayoutMenuItem getSelectedMenuItem() {
+        return (AppLayoutMenuItem) menuTabs.getSelectedTab();
     }
 
     /**
