@@ -196,4 +196,15 @@ public class AppLayoutTest {
         Assert.assertFalse(children.contains(content));
         Assert.assertNull(systemUnderTest.getContent());
     }
+
+    @Test
+    public void setMenuItems_after_calling_addMenuItem() {
+        systemUnderTest.addMenuItem(new AppLayoutMenuItem("Action1"));
+        systemUnderTest.setMenuItems(new AppLayoutMenuItem("Action2"),
+            new AppLayoutMenuItem("Action3"));
+        Assert.assertArrayEquals(new Object[] { "Action2", "Action3" },
+            systemUnderTest.getMenu().getChildren()
+                .map(AppLayoutMenuItem.class::cast).map(e -> e.getTitle())
+                .toArray());
+    }
 }
