@@ -24,29 +24,6 @@ public class AppLayoutTest {
     }
 
     @Test
-    public void onAttach_noMenuItem() {
-        systemUnderTest.onAttach(new AttachEvent(systemUnderTest, true));
-
-        long menuCount = systemUnderTest.getChildren()
-                .map(Component::getElement)
-                .filter(e -> e.getAttribute("slot").equals("menu"))
-                .count();
-
-        Assert.assertEquals(1, menuCount);
-        Assert.assertNull(systemUnderTest.getSelectedMenuItem());
-    }
-
-    @Test
-    public void onAttach_withMenuItems() {
-        systemUnderTest.addMenuItem(new AppLayoutMenuItem("Go offline"));
-        systemUnderTest.addMenuItem(new AppLayoutMenuItem("Logout", "Logout"));
-        systemUnderTest.onAttach(new AttachEvent(systemUnderTest, true));
-
-        // A menu item is selected by default.
-        Assert.assertNotNull(systemUnderTest.getSelectedMenuItem());
-    }
-
-    @Test
     public void setBranding_Element() {
         Element branding = new H2("Vaadin").getElement();
         systemUnderTest.setBranding(branding);
@@ -65,7 +42,8 @@ public class AppLayoutTest {
         systemUnderTest.setBranding(branding);
         Assert.assertEquals("branding",
             branding.getElement().getAttribute("slot"));
-        assertContainsElement(branding.getElement());
+        Assert.assertTrue(systemUnderTest.getChildren()
+            .anyMatch(branding::equals));
     }
 
     @Test
@@ -137,10 +115,10 @@ public class AppLayoutTest {
         AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
         systemUnderTest.addMenuItem(home);
 
-        RoutingMenuItem profile = new RoutingMenuItem("Profile", "profile");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
         systemUnderTest.addMenuItem(profile);
 
-        RoutingMenuItem settings = new RoutingMenuItem("Settings", "settings");
+        AppLayoutMenuItem settings = new AppLayoutMenuItem("Settings", "settings");
         systemUnderTest.addMenuItem(settings);
 
         Assert.assertEquals(profile,
@@ -149,10 +127,10 @@ public class AppLayoutTest {
 
     @Test
     public void getMenuItemTargetingRoute_none() {
-        RoutingMenuItem home = new RoutingMenuItem("Home", "");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
         systemUnderTest.addMenuItem(home);
 
-        RoutingMenuItem profile = new RoutingMenuItem("Profile", "profile");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
         systemUnderTest.addMenuItem(profile);
 
         Assert.assertFalse(
@@ -161,10 +139,10 @@ public class AppLayoutTest {
 
     @Test
     public void getMenuItemTargetingRoute_duplicate() {
-        RoutingMenuItem profile = new RoutingMenuItem("Profile", "profile");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
         systemUnderTest.addMenuItem(profile);
 
-        RoutingMenuItem settings = new RoutingMenuItem("Settings", "profile");
+        AppLayoutMenuItem settings = new AppLayoutMenuItem("Settings", "profile");
         systemUnderTest.addMenuItem(settings);
 
         Assert.assertEquals(profile,
@@ -173,23 +151,22 @@ public class AppLayoutTest {
 
     @Test
     public void selectMenuItem() {
-        RoutingMenuItem home = new RoutingMenuItem("Home", "");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
         systemUnderTest.addMenuItem(home);
 
-        RoutingMenuItem profile = new RoutingMenuItem("Profile", "profile");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
         systemUnderTest.addMenuItem(profile);
 
-        ActionMenuItem logout = new ActionMenuItem("Logout");
+        AppLayoutMenuItem logout = new AppLayoutMenuItem("Logout");
         systemUnderTest.addMenuItem(logout);
 
-        systemUnderTest.onAttach(new AttachEvent(systemUnderTest, false));
 
         Assert.assertFalse(
                 systemUnderTest.getMenu().getElement().hasProperty("selected"));
 
         systemUnderTest.selectMenuItem(profile);
 
-        // Behavior of an ActionMenuItem selection cannot be unit-tested
+        // Behavior of an AppLayoutMenuItem selection cannot be unit-tested
         // because Tabs for Flow doesn't trigger the selection server-side.
         Assert.assertEquals("1",
                 systemUnderTest.getMenu().getElement().getProperty("selected"));
