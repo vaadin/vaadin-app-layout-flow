@@ -39,21 +39,9 @@ class AppLayoutMenu implements HasElement, AttachNotifier {
     AppLayoutMenu() {
         getElement().setAttribute("slot", "menu");
         getElement().setAttribute("theme", "minimal");
+
         tabs.addAttachListener(attachEvent -> {
-            try {
-                final AppLayoutMenuItem selectedTab = (AppLayoutMenuItem) tabs
-                    .getSelectedTab();
-                if (selectedTab != null) {
-                    if (selectedTab.getRoute() != null) {
-                        selectedMenuItem = (AppLayoutMenuItem) tabs
-                            .getSelectedTab();
-                    } else {
-                        tabs.setSelectedIndex(-1);
-                    }
-                }
-            } catch (IllegalArgumentException ignored) {
-                //  Thrown when there are no menu items.
-            }
+            tabs.setSelectedTab(selectedMenuItem);
             tabs.addSelectedChangeListener(event -> {
                 final AppLayoutMenuItem selectedTab = (AppLayoutMenuItem) tabs
                     .getSelectedTab();

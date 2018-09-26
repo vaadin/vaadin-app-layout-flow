@@ -2,6 +2,7 @@ package com.vaadin.flow.component.applayout;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -150,7 +151,6 @@ public class AppLayoutTest {
     }
 
     @Test
-    @Ignore
     public void selectMenuItem() {
         AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
         systemUnderTest.addMenuItem(home);
@@ -161,15 +161,14 @@ public class AppLayoutTest {
         AppLayoutMenuItem logout = new AppLayoutMenuItem("Logout");
         systemUnderTest.addMenuItem(logout);
 
-        Assert.assertFalse(
-            systemUnderTest.getMenu().getElement().hasProperty("selected"));
+        final Tabs tabs = (Tabs) systemUnderTest.getMenu().getElement()
+            .getComponent().get();
+        ComponentUtil.fireEvent(tabs, new AttachEvent(tabs, true));
+        Assert.assertNull(tabs.getSelectedTab());
 
         systemUnderTest.selectMenuItem(profile);
 
-        // Behavior of an AppLayoutMenuItem selection cannot be unit-tested
-        // because Tabs for Flow doesn't trigger the selection server-side.
-        Assert.assertEquals("1",
-            systemUnderTest.getMenu().getElement().getProperty("selected"));
+        Assert.assertEquals(profile, tabs.getSelectedTab());
     }
 
     @Test
