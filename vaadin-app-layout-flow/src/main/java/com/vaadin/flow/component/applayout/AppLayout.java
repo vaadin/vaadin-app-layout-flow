@@ -19,6 +19,7 @@ package com.vaadin.flow.component.applayout;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.dom.Element;
@@ -49,8 +50,7 @@ public class AppLayout extends Component {
     /**
      * Sets the component into branding area
      *
-     * @param branding
-     *            Component to set into branding area
+     * @param branding Component to set into branding area
      */
     public void setBranding(Component branding) {
         setBranding(branding != null ? branding.getElement() : null);
@@ -59,8 +59,7 @@ public class AppLayout extends Component {
     /**
      * Sets the element into branding area
      *
-     * @param branding
-     *            Element to set into branding area
+     * @param branding Element to set into branding area
      */
     public void setBranding(Element branding) {
         Objects.requireNonNull(branding, "Branding cannot be null");
@@ -74,66 +73,57 @@ public class AppLayout extends Component {
     }
 
     /**
+     * Clears the branding area
+     */
+    public void removeBranding() {
+        remove(this.branding);
+        this.branding = null;
+    }
+
+    /**
      * Selects a menu item.
      */
     void selectMenuItem(AppLayoutMenuItem menuItem) {
         menuTabs.selectMenuItem(menuItem);
     }
-    /**
-     * Clears the branding area
-     */
-    public void removeBranding() {
-        if (this.branding == null) {
-            return;
-        }
-
-        getElement().removeChild(this.branding);
-
-        this.branding = null;
-    }
 
     /**
      * Clears existing menu items and sets the new the arguments.
-     * @param menuItems
+     *
+     * @param menuItems menu items to set.
      */
     public void setMenuItems(AppLayoutMenuItem... menuItems) {
-        menuTabs.removeAll();
-        menuTabs.add(menuItems);
+        menuTabs.setMenuItems(menuItems);
     }
 
     /**
      * Adds menu item to the menu
      *
-     * @param menuItem
-     *              Menu Item to add
+     * @param menuItem Menu Item to add
      */
     public void addMenuItem(AppLayoutMenuItem menuItem) {
-        menuTabs.add(menuItem);
+        menuTabs.addMenuItem(menuItem);
     }
 
     /**
      * Removes menu item from the menu
      */
     public void removeMenuItem(AppLayoutMenuItem menuItem) {
-        menuTabs.remove(menuItem);
+        menuTabs.removeMenuItem(menuItem);
     }
 
     /**
      * Gets the first {@link AppLayoutMenuItem} targeting a route.
      */
     Optional<AppLayoutMenuItem> getMenuItemTargetingRoute(String route) {
-        Objects.requireNonNull(route,"Route can not be null");
-        return menuTabs.getChildren()
-                .map(e -> (AppLayoutMenuItem) e)
-                .filter(e -> route.equals(e.getRoute()))
-                .findFirst();
+        return menuTabs.getMenuItemTargetingRoute(route);
     }
 
     /**
      * Gets the currently selected menu item.
      */
     public AppLayoutMenuItem getSelectedMenuItem() {
-        return (AppLayoutMenuItem) menuTabs.getSelectedTab();
+        return menuTabs.getSelectedMenuItem();
     }
 
     /**
@@ -146,8 +136,7 @@ public class AppLayout extends Component {
     /**
      * Sets the displayed content.
      *
-     * @param content
-     *              Component to display in the content area
+     * @param content Component to display in the content area
      */
     public void setContent(Component content) {
         setContent(content != null ? content.getElement() : null);
@@ -156,8 +145,7 @@ public class AppLayout extends Component {
     /**
      * Sets the displayed content.
      *
-     * @param content
-     *              Element to display in the content area
+     * @param content Element to display in the content area
      */
     public void setContent(Element content) {
         Objects.requireNonNull(content, "Content cannot be null");
@@ -172,15 +160,18 @@ public class AppLayout extends Component {
      * Removes the displayed content.
      */
     public void removeContent() {
-        if (this.content != null) {
-            this.content.removeFromParent();
-        }
-
+        remove(this.content);
         this.content = null;
     }
 
+    private void remove(Element element) {
+        if (element != null) {
+            element.removeFromParent();
+        }
+    }
+
     @VisibleForTesting
-    Component getMenu() {
+    HasElement getMenu() {
         return menuTabs;
     }
 }

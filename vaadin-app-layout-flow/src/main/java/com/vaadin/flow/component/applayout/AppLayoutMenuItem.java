@@ -148,6 +148,7 @@ public class AppLayoutMenuItem extends Tab {
         } else {
             getElement().removeAttribute("title");
         }
+        this.icon = icon;
         this.title = title;
     }
 
