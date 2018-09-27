@@ -113,6 +113,13 @@ public class AppLayout extends Component {
     }
 
     /**
+     * Removes all menu items.
+     */
+    public void clearMenuItems() {
+        menuTabs.clearMenuItems();
+    }
+
+    /**
      * Gets the first {@link AppLayoutMenuItem} targeting a route.
      */
     Optional<AppLayoutMenuItem> getMenuItemTargetingRoute(String route) {

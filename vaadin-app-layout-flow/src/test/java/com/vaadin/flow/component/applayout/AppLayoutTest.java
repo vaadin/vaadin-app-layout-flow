@@ -206,4 +206,22 @@ public class AppLayoutTest {
                 .map(e -> (AppLayoutMenuItem) e.getComponent().get())
                 .map(AppLayoutMenuItem::getTitle).toArray());
     }
+
+    @Test
+    public void clearMenuItems() {
+        Assert.assertEquals(0,
+            systemUnderTest.getMenu().getElement().getChildCount());
+        //No exception on clearing already empty.
+        systemUnderTest.clearMenuItems();
+        systemUnderTest.setMenuItems(new AppLayoutMenuItem("Action1"),
+            new AppLayoutMenuItem("Action2"));
+        Assert.assertEquals(2,
+            systemUnderTest.getMenu().getElement().getChildCount());
+
+        systemUnderTest.clearMenuItems();
+        Assert.assertEquals(0,
+            systemUnderTest.getMenu().getElement().getChildCount());
+
+    }
+
 }

@@ -70,8 +70,7 @@ class AppLayoutMenu implements HasElement, AttachNotifier {
      * @param menuItems items to set
      */
     void setMenuItems(AppLayoutMenuItem... menuItems) {
-        selectedMenuItem = null;
-        tabs.removeAll();
+        clearMenuItems();
         tabs.add(menuItems);
     }
 
@@ -92,6 +91,14 @@ class AppLayoutMenu implements HasElement, AttachNotifier {
             this.selectedMenuItem = null;
         }
         tabs.remove(menuItem);
+    }
+
+    /**
+     * Removes all menu items.
+     */
+    public void clearMenuItems() {
+        selectedMenuItem = null;
+        tabs.removeAll();
     }
 
     /**
