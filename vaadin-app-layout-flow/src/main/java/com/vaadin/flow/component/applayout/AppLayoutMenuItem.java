@@ -8,10 +8,10 @@ package com.vaadin.flow.component.applayout;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file license.html distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -22,8 +22,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.shared.Registration;
-
-import java.util.Objects;
 
 /**
  * Base class representing menu items.
@@ -57,7 +55,7 @@ public class AppLayoutMenuItem extends Tab {
      * @param icon the icon to display
      */
     public AppLayoutMenuItem(Component icon) {
-        this(icon, null);
+        this(icon, (String) null);
     }
 
     /**
@@ -69,8 +67,9 @@ public class AppLayoutMenuItem extends Tab {
     public AppLayoutMenuItem(Component icon, String title) {
         updateTitleAndIcon(icon, title);
     }
+
     /**
-     * Constructs a new object with the given icon and route.
+     * Constructs a new object with the given title and route.
      *
      * @param title the title to display
      * @param route The route to navigate on click
@@ -89,6 +88,28 @@ public class AppLayoutMenuItem extends Tab {
     public AppLayoutMenuItem(Component icon, String title, String route) {
         this(icon, title);
         setRoute(route);
+    }
+
+    /**
+     * Constructs a new object with the given icon and click listener.
+     *
+     * @param icon     the icon to display
+     * @param listener the menu item click listener
+     */
+    public AppLayoutMenuItem(Component icon,
+        ComponentEventListener<MenuItemClickEvent> listener) {
+        this(icon, null, listener);
+    }
+
+    /**
+     * Constructs a new object with the given title and click listener.
+     *
+     * @param title    the title to display
+     * @param listener the menu item click listener
+     */
+    public AppLayoutMenuItem(String title,
+        ComponentEventListener<MenuItemClickEvent> listener) {
+        this(null, title, listener);
     }
 
     /**
@@ -162,7 +183,6 @@ public class AppLayoutMenuItem extends Tab {
     }
 
     /**
-     *
      * @return Route associated with this menu item.
      */
     public String getRoute() {
@@ -179,6 +199,6 @@ public class AppLayoutMenuItem extends Tab {
     }
 
     void fireMenuItemClickEvent() {
-        fireEvent(new MenuItemClickEvent(this,false));
+        fireEvent(new MenuItemClickEvent(this, false));
     }
 }
