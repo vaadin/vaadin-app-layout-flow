@@ -101,8 +101,8 @@ public class AppLayout extends Component {
      *
      * @param menuItem Menu Item to add
      */
-    public void addMenuItem(AppLayoutMenuItem menuItem) {
-        menuTabs.addMenuItem(menuItem);
+    public void addMenuItems(AppLayoutMenuItem... menuItem) {
+        menuTabs.addMenuItems(menuItem);
     }
 
     /**
