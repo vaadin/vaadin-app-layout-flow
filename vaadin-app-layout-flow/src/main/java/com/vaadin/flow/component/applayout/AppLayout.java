@@ -181,7 +181,7 @@ public class AppLayout extends Component {
     }
 
     private AppLayoutMenuItem addAndReturn(AppLayoutMenuItem item) {
-        addMenuItem(item);
+        addMenuItems(item);
         return item;
     }
 
