@@ -8,10 +8,10 @@ package com.vaadin.flow.component.applayout;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file license.html distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -40,7 +40,7 @@ public class AppLayout extends Component {
     /**
      * Sets the component into branding area
      *
-     * @param branding Component to set into branding area
+     * @param branding {@link Component} to set into branding area
      */
     public void setBranding(Component branding) {
         setBranding(toElement(branding));
@@ -49,7 +49,7 @@ public class AppLayout extends Component {
     /**
      * Sets the element into branding area
      *
-     * @param branding Element to set into branding area
+     * @param branding {@link Element} to set into branding area
      */
     public void setBranding(Element branding) {
         Objects.requireNonNull(branding, "Branding cannot be null");
@@ -71,7 +71,7 @@ public class AppLayout extends Component {
     }
 
     /**
-     * Returns a content
+     * Returns the {@link Element}
      */
     public Element getContent() {
         return content;
@@ -80,7 +80,7 @@ public class AppLayout extends Component {
     /**
      * Sets the displayed content.
      *
-     * @param content Component to display in the content area
+     * @param content {@link Component} to display in the content area
      */
     public void setContent(Component content) {
         setContent(toElement(content));
@@ -89,7 +89,7 @@ public class AppLayout extends Component {
     /**
      * Sets the displayed content.
      *
-     * @param content Element to display in the content area
+     * @param content {@link Element} to display in the content area
      */
     public void setContent(Element content) {
         Objects.requireNonNull(content, "Content cannot be null");
@@ -109,7 +109,7 @@ public class AppLayout extends Component {
     }
 
     /**
-     * @return the element at the menu slot.
+     * @return {@link Element} displayed at the content area.
      */
     public Element getMenu() {
         return menu;
@@ -118,7 +118,7 @@ public class AppLayout extends Component {
     /**
      * Sets the component to be placed in the menu slot.
      *
-     * @param menu Component to placed in the menu slot.
+     * @param menu {@link HasElement} to placed in the menu slot.
      */
     public void setMenu(HasElement menu) {
         setMenu(toElement(menu));
@@ -127,7 +127,7 @@ public class AppLayout extends Component {
     /**
      * Sets the element to be placed in the menu slot.
      *
-     * @param menu Element to placed in the menu slot.
+     * @param menu {@link Element} to placed in the menu slot.
      */
     public void setMenu(Element menu) {
         Objects.requireNonNull(menu, "Menu cannot be null");
@@ -141,7 +141,7 @@ public class AppLayout extends Component {
     /**
      * Creates a new empty AppLayoutMenu and sets it as the menu for this AppLayout instance.
      *
-     * @return AppLayoutMenu created.
+     * @return {@link AppLayoutMenu} created.
      */
     public AppLayoutMenu createMenu() {
         final AppLayoutMenu menu = new AppLayoutMenu();

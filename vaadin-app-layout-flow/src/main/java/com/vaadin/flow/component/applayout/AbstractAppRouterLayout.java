@@ -43,7 +43,8 @@ public abstract class AbstractAppRouterLayout implements RouterLayout {
      * This hook is called when this router layout is being constructed
      * and provides an opportunity to configure the AppLayout in use.
      *
-     * @param appLayout {@link AppLayout} to configure.
+     * @param appLayout {@link AppLayout} parent layout
+     * @param appLayoutMenu {@link AppLayoutMenu} to configure.
      */
     protected abstract void configure(AppLayout appLayout,
         AppLayoutMenu appLayoutMenu);
@@ -53,7 +54,7 @@ public abstract class AbstractAppRouterLayout implements RouterLayout {
      * which has this router layout as its parent layout.
      *
      * @param route   route that is being navigated to
-     * @param content the content component
+     * @param content {@link HasElement} the content component
      */
     protected void onNavigate(String route, HasElement content) {
     }
@@ -76,12 +77,16 @@ public abstract class AbstractAppRouterLayout implements RouterLayout {
     }
 
     /**
-     * Returns an application layout instance
+     * @return {@link AppLayout} parent layout
      */
     public AppLayout getAppLayout() {
         return appLayout;
     }
 
+    /**
+     *
+     * @return {@link AppLayoutMenu} which will be updated on navigation.
+     */
     public AppLayoutMenu getAppLayoutMenu() {
         return appLayoutMenu;
     }

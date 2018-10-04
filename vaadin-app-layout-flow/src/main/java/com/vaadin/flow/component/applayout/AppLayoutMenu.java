@@ -8,10 +8,10 @@ package com.vaadin.flow.component.applayout;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file license.html distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -68,7 +68,7 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
     /**
      * Clears existing menu items and sets the new the arguments.
      *
-     * @param menuItems items to set
+     * @param menuItems items of the type {@link AppLayoutMenuItem} to set
      */
     public void setMenuItems(AppLayoutMenuItem... menuItems) {
         clearMenuItems();
@@ -78,7 +78,7 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
     /**
      * Adds menu items to the menu.
      *
-     * @param menuItems items to add
+     * @param menuItems items of the type {@link AppLayoutMenuItem} to add
      */
     public void addMenuItems(AppLayoutMenuItem... menuItems) {
         tabs.add(menuItems);
@@ -164,7 +164,7 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
     }
 
     /**
-     * Removes menu item from the menu
+     * Removes {@link AppLayoutMenuItem} from the menu
      */
     public void removeMenuItem(AppLayoutMenuItem menuItem) {
         if (Objects.equals(this.selectedMenuItem, menuItem)) {
@@ -183,6 +183,8 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
 
     /**
      * Selects a menu item.
+     *
+     * @param menuItem {@link AppLayoutMenuItem} to select
      */
     public void selectMenuItem(AppLayoutMenuItem menuItem) {
         selectedMenuItem = menuItem;
@@ -191,6 +193,9 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
 
     /**
      * Gets the first {@link AppLayoutMenuItem} targeting a route.
+     *
+     * @param route route to match to {@link AppLayoutMenuItem#getRoute()}
+     * @return {@link AppLayoutMenuItem} wrapped in an {@link Optional}, if found.
      */
     public Optional<AppLayoutMenuItem> getMenuItemTargetingRoute(String route) {
         Objects.requireNonNull(route, "Route can not be null");
@@ -200,6 +205,8 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
 
     /**
      * Gets the currently selected menu item.
+     *
+     * @return {@link AppLayoutMenuItem} selected menu item.
      */
     public AppLayoutMenuItem getSelectedMenuItem() {
         return selectedMenuItem;
