@@ -40,7 +40,6 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
      * Default constructor.
      */
     public AppLayoutMenu() {
-        tabs.getElement().setAttribute("theme", "minimal");
         tabs.addSelectedChangeListener(selectionChangeListener);
     }
 
