@@ -80,6 +80,15 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
     }
 
     /**
+     * Adds item to the menu.
+     *
+     * @param item {@link AppLayoutMenuItem} to add
+     */
+    public AppLayoutMenuItem addMenuItem(AppLayoutMenuItem item) {
+        return addAndReturn(item);
+    }
+
+    /**
      * Constructs a new object with the given icon.
      *
      * @param icon the icon to display
