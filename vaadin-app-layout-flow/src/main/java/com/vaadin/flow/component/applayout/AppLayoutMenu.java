@@ -194,7 +194,7 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
      * @param menuItem {@link AppLayoutMenuItem} to select
      * @param fireSelectionChange whether or not to trigger SelectionChange event
      */
-    public void selectMenuItem(AppLayoutMenuItem menuItem, boolean fireSelectionChange) {
+    void selectMenuItem(AppLayoutMenuItem menuItem, boolean fireSelectionChange) {
         try {
             if (!fireSelectionChange) {
                 selectionChangeListener.enabled = false;
