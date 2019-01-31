@@ -63,7 +63,7 @@ public abstract class AbstractParallelTest extends ParallelTest {
     }
 
     protected String getPort() {
-        return "8080";
+        return "9998";
     }
 
     @BrowserConfiguration
