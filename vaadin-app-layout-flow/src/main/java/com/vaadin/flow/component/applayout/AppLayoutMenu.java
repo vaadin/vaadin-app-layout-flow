@@ -23,17 +23,21 @@ package com.vaadin.flow.component.applayout;
 import com.vaadin.flow.component.AttachNotifier;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasElement;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.router.RouteNotFoundError;
 
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Menu to be used with AppLayout. Provides clicable tabs that can be used for routing or individual actions.
+ * Menu to be used with AppLayout. Provides clickable tabs that can be used for routing or individual actions.
  */
-public class AppLayoutMenu implements HasElement, AttachNotifier {
+public class AppLayoutMenu extends Composite<Tabs> {
 
     private final Tabs tabs = new Tabs();
     private final SelectionChangeListener selectionChangeListener = new SelectionChangeListener();
@@ -44,6 +48,11 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
      */
     public AppLayoutMenu() {
         tabs.addSelectedChangeListener(selectionChangeListener);
+    }
+
+    @Override
+    protected Tabs initContent() {
+        return tabs;
     }
 
     /**
@@ -235,6 +244,15 @@ public class AppLayoutMenu implements HasElement, AttachNotifier {
     @Override
     public Element getElement() {
         return tabs.getElement();
+    }
+
+    void updateCurrentRoute(String target) {
+        if(target == null) {
+            selectMenuItem(null);
+        } else {
+            getMenuItemTargetingRoute(target)
+                .ifPresent(item -> selectMenuItem(item, false));
+        }
     }
 
     private class SelectionChangeListener

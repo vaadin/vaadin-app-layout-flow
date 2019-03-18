@@ -1,5 +1,6 @@
 package com.vaadin.flow.component.applayout.examples;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Div;
@@ -24,7 +25,7 @@ public class AppRouterLayoutWithRouterLinks extends Div
 
     @Override
     public void showRouterLayoutContent(HasElement content) {
-        appLayout.setContent(content.getElement());
+        appLayout.setContent((Component) content);
     }
 
 }

@@ -22,7 +22,7 @@ public class AppLayoutTest {
 
     @Test
     public void setBranding_Element() {
-        Element branding = new H2("Vaadin").getElement();
+        H2 branding = new H2("Vaadin");
         systemUnderTest.setBranding(branding);
 
         // Verify that branding goes to the branding slot.
@@ -44,7 +44,7 @@ public class AppLayoutTest {
 
     @Test
     public void removeBranding() {
-        Element branding = new H2("Vaadin").getElement();
+        H2 branding = new H2("Vaadin");
         systemUnderTest.setBranding(branding);
 
         systemUnderTest.removeBranding();
@@ -55,7 +55,7 @@ public class AppLayoutTest {
 
     @Test
     public void setContent() {
-        Element content = new Div().getElement();
+        Div content = new Div();
         systemUnderTest.setContent(content);
 
         List<Element> children = systemUnderTest.getElement().getChildren()
@@ -67,7 +67,7 @@ public class AppLayoutTest {
     public void removeContent() {
         systemUnderTest.removeContent(); // No NPE.
 
-        Element content = new Div().getElement();
+        Div content = new Div();
         systemUnderTest.setContent(content);
 
         systemUnderTest.removeContent();

@@ -21,15 +21,9 @@ import java.util.List;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(UI.class)
-public class AbstractAppRouterLayoutTest {
+public class AppLayoutRouterTest {
 
-    public class TestAppRouterLayout extends AbstractAppRouterLayout {
-
-        @Override
-        protected void configure(AppLayout appLayout,
-            AppLayoutMenu appLayoutMenu) {
-            events.add("Configured");
-        }
+    public class TestAppRouterLayout extends AppLayout {
 
         @Override
         protected void beforeNavigate(String route, HasElement content) {
@@ -52,7 +46,7 @@ public class AbstractAppRouterLayoutTest {
 
     private final List<String> events = new ArrayList<>();
 
-    private AbstractAppRouterLayout systemUnderTest;
+    private AppLayout systemUnderTest;
 
     @Before
     public void setup() {
@@ -73,8 +67,8 @@ public class AbstractAppRouterLayoutTest {
 
         AppLayoutMenuItem route1MenuItem = new AppLayoutMenuItem("Route 1",
             "route1");
-        systemUnderTest.getAppLayoutMenu().addMenuItems(route1MenuItem,
-            new AppLayoutMenuItem("Dummy", "dummy"));
+        AppLayoutMenu menu = new AppLayoutMenu();
+        menu.addMenuItems(route1MenuItem,new AppLayoutMenuItem("Dummy", "dummy"));
 
         Route1 route1 = new Route1();
 
@@ -89,16 +83,16 @@ public class AbstractAppRouterLayoutTest {
 
         // Ensure the matching menu item is selected
         Assert.assertEquals(route1MenuItem,
-            systemUnderTest.getAppLayoutMenu().getSelectedMenuItem());
-        Assert.assertEquals(route1.getElement(),
-            systemUnderTest.getAppLayout().getContent());
+            menu.getSelectedMenuItem());
+        Assert.assertEquals(route1,
+            systemUnderTest.getContent());
 
         // Simulate navigation to Route2 (which has no matching menu item)
         systemUnderTest.showRouterLayoutContent(new Route2());
 
         // Ensure selected menu item remains unchanged
         Assert.assertEquals(route1MenuItem,
-            systemUnderTest.getAppLayoutMenu().getSelectedMenuItem());
+            menu.getSelectedMenuItem());
     }
 
     private void setupFlowRouting() {

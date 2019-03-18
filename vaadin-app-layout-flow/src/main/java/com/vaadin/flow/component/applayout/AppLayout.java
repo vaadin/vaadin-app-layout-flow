@@ -23,8 +23,12 @@ package com.vaadin.flow.component.applayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.router.RouteNotFoundError;
+import com.vaadin.flow.router.RouterLayout;
+import com.vaadin.flow.router.RouterLink;
 
 import java.util.Objects;
 
@@ -34,11 +38,11 @@ import java.util.Objects;
  */
 @Tag("vaadin-app-layout")
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
-public class AppLayout extends Component {
+public class AppLayout extends Component implements RouterLayout {
 
-    private Element branding;
-    private Element content;
-    private Element menu;
+    private Component branding;
+    private Component content;
+    private Component menu;
 
     /**
      * Sets the component into branding area
@@ -46,23 +50,14 @@ public class AppLayout extends Component {
      * @param branding {@link Component} to set into branding area
      */
     public void setBranding(Component branding) {
-        setBranding(toElement(branding));
-    }
-
-    /**
-     * Sets the element into branding area
-     *
-     * @param branding {@link Element} to set into branding area
-     */
-    public void setBranding(Element branding) {
         Objects.requireNonNull(branding, "Branding cannot be null");
 
         removeBranding();
 
         this.branding = branding;
-        branding.setAttribute("slot", "branding");
+        branding.getElement().setAttribute("slot", "branding");
 
-        getElement().appendChild(branding);
+        getElement().appendChild(branding.getElement());
     }
 
     /**
@@ -76,7 +71,7 @@ public class AppLayout extends Component {
     /**
      * Returns the {@link Element}
      */
-    public Element getContent() {
+    public Component getContent() {
         return content;
     }
 
@@ -86,21 +81,13 @@ public class AppLayout extends Component {
      * @param content {@link Component} to display in the content area
      */
     public void setContent(Component content) {
-        setContent(toElement(content));
-    }
-
-    /**
-     * Sets the displayed content.
-     *
-     * @param content {@link Element} to display in the content area
-     */
-    public void setContent(Element content) {
         Objects.requireNonNull(content, "Content cannot be null");
 
         removeContent();
 
         this.content = content;
-        getElement().appendChild(content);
+        content.getElement().removeAttribute("slot");
+        getElement().appendChild(content.getElement());
     }
 
     /**
@@ -114,7 +101,7 @@ public class AppLayout extends Component {
     /**
      * @return {@link Element} displayed at the content area.
      */
-    public Element getMenu() {
+    public Component getMenu() {
         return menu;
     }
 
@@ -123,22 +110,13 @@ public class AppLayout extends Component {
      *
      * @param menu {@link HasElement} to placed in the menu slot.
      */
-    public void setMenu(HasElement menu) {
-        setMenu(toElement(menu));
-    }
-
-    /**
-     * Sets the element to be placed in the menu slot.
-     *
-     * @param menu {@link Element} to placed in the menu slot.
-     */
-    public void setMenu(Element menu) {
+    public void setMenu(Component menu) {
         Objects.requireNonNull(menu, "Menu cannot be null");
 
         removeMenu();
         this.menu = menu;
-        menu.setAttribute("slot", "menu");
-        getElement().appendChild(menu);
+        menu.getElement().setAttribute("slot", "menu");
+        getElement().appendChild(menu.getElement());
     }
 
     /**
@@ -160,13 +138,54 @@ public class AppLayout extends Component {
         this.menu = null;
     }
 
-    private void remove(Element element) {
-        if (element != null) {
-            element.removeFromParent();
+    private void remove(Component component) {
+        if (component != null) {
+            component.getElement().removeFromParent();
         }
     }
 
-    private static Element toElement(HasElement hasElement) {
-        return hasElement != null ? hasElement.getElement() : null;
+    @Override
+    public void showRouterLayoutContent(HasElement content) {
+        final Component component = content.getElement().getComponent()
+            .orElseThrow(() -> new IllegalArgumentException(
+                "AppLayout content must me a Component"));
+        final String target = getTarget(component);
+        if (menu instanceof AppLayoutMenu) {
+            ((AppLayoutMenu) content).updateCurrentRoute(target);
+        }
+        beforeNavigate(target, content);
+        setContent(component);
+        afterNavigate(target, content);
     }
+
+    private static String getTarget(Component content) {
+        if (content instanceof RouteNotFoundError) {
+            return null;
+        } else {
+            return UI.getCurrent().getRouter()
+                .getUrl(content.getClass());
+        }
+    }
+
+    /**
+     * This hook is called before a navigation is being made into a route
+     * which has this router layout as its parent layout.
+     *
+     * @param route route that is being navigated to
+     * @param content  {@link HasElement} the content component being added
+     */
+    protected void beforeNavigate(String route, HasElement content) {
+    }
+
+    /**
+     * This hook is called after a navigation is made into a route
+     * which has this router layout as its parent layout.
+     *
+     * @param route route navigated to
+     * @param content  {@link HasElement} the content component added
+     */
+    protected void afterNavigate(String route, HasElement content) {
+    }
+
+
 }

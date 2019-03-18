@@ -23,7 +23,7 @@ public class AppRouterLayout extends AbstractAppRouterLayout {
 
     @Override
     protected void configure(AppLayout appLayout, AppLayoutMenu appLayoutMenu) {
-        appLayout.setBranding(new Span("Vaadin").getElement());
+        appLayout.setBranding(new Span("Vaadin"));
 
         appLayoutMenu.addMenuItems(generateMenuItems(
             i -> new AppLayoutMenuItem(VaadinIcon.SAFE_LOCK.create(),
