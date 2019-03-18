@@ -1,7 +1,6 @@
 package com.vaadin.flow.component.applayout.examples;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AbstractAppRouterLayout;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.AppLayoutMenu;
 import com.vaadin.flow.component.applayout.AppLayoutMenuItem;
@@ -17,13 +16,13 @@ import java.util.stream.IntStream;
 
 @BodySize
 @Theme(Lumo.class)
-public class AppRouterLayout extends AbstractAppRouterLayout {
+public class AppRouterLayout extends AppLayout {
 
     private static final int NOTIFICATION_DURATION = 10000;
 
-    @Override
-    protected void configure(AppLayout appLayout, AppLayoutMenu appLayoutMenu) {
-        appLayout.setBranding(new Span("Vaadin"));
+    public AppRouterLayout() {
+        AppLayoutMenu appLayoutMenu = createMenu();
+        this.setBranding(new Span("Vaadin"));
 
         appLayoutMenu.addMenuItems(generateMenuItems(
             i -> new AppLayoutMenuItem(VaadinIcon.SAFE_LOCK.create(),
