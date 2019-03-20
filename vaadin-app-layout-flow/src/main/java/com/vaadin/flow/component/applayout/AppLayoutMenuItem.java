@@ -22,8 +22,11 @@ package com.vaadin.flow.component.applayout;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.shared.Registration;
 
 /**
@@ -33,16 +36,16 @@ public class AppLayoutMenuItem extends Tab {
 
     private Component icon;
     private String title;
-    private String route;
+    private RouterLink route;
 
     {
+        //TODO Remove with tabs 3.0.0
         addMenuItemClickListener(event -> {
             if (getRoute() != null) {
-                getUI().ifPresent(ui -> ui.navigate(route));
+                UI.getCurrent().navigate(getRoute().getHref());
             }
         });
     }
-
     /**
      * Constructs a new object with the given title.
      *
@@ -77,8 +80,18 @@ public class AppLayoutMenuItem extends Tab {
      * @param title the title to display
      * @param route The route to navigate on click
      */
-    public AppLayoutMenuItem(String title, String route) {
+    public AppLayoutMenuItem(String title, RouterLink route) {
         this(null, title, route);
+    }
+
+    /**
+     * Constructs a new object with the given title and route target.
+     *
+     * @param title the title to display
+     * @param target The navigation target for the route.
+     */
+    public AppLayoutMenuItem(String title, Class<? extends Component> target) {
+        this(null, title, new RouterLink(null,target));
     }
 
     /**
@@ -88,9 +101,21 @@ public class AppLayoutMenuItem extends Tab {
      * @param title the title to display
      * @param route the route to navigate on click
      */
-    public AppLayoutMenuItem(Component icon, String title, String route) {
-        this(icon, title);
+    public AppLayoutMenuItem(Component icon, String title, RouterLink route) {
         setRoute(route);
+        updateTitleAndIcon(icon, title);
+    }
+
+    /**
+     * Constructs a new object with the given icon, title and route.
+     *
+     * @param icon   the icon to display
+     * @param title  the title to display
+     * @param target The navigation target for the route.
+     * @throws com.vaadin.flow.router.NotFoundException If the target's route could not be found the registry.
+     */
+    public AppLayoutMenuItem(Component icon, String title, Class<? extends Component> target) {
+        this(icon, title, new RouterLink(null,target));
     }
 
     /**
@@ -161,14 +186,21 @@ public class AppLayoutMenuItem extends Tab {
     }
 
     private void updateTitleAndIcon(Component icon, String title) {
-        removeAll();
+        final HasComponents container =
+            this.route != null ? this.route : this;
+        updateTitleAndIcon(container, icon, title);
+    }
+
+    private void updateTitleAndIcon(HasComponents container, Component icon,
+        String title) {
+        container.removeAll();
         if (icon != null) {
             icon.getElement().setAttribute("role", "img");
-            add(icon);
+            container.add(icon);
         }
         if (title != null) {
             getElement().setAttribute("title", title);
-            add(new Span(title));
+            container.add(new Span(title));
         } else {
             getElement().removeAttribute("title");
         }
@@ -181,14 +213,20 @@ public class AppLayoutMenuItem extends Tab {
      *
      * @param route Route to be navigated to
      */
-    public void setRoute(String route) {
+    public void setRoute(RouterLink route) {
+        if(this.route != null) {
+            this.remove(this.route);
+        }
         this.route = route;
+        if(this.route != null) {
+            this.add(this.route);
+        }
     }
 
     /**
      * @return Route associated with this menu item.
      */
-    public String getRoute() {
+    public RouterLink getRoute() {
         return route;
     }
 

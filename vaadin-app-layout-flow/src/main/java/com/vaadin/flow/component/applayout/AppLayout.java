@@ -146,45 +146,33 @@ public class AppLayout extends Component implements RouterLayout {
 
     @Override
     public void showRouterLayoutContent(HasElement content) {
-        final Component component = content.getElement().getComponent()
+        final Component target = content.getElement().getComponent()
             .orElseThrow(() -> new IllegalArgumentException(
-                "AppLayout content must me a Component"));
-        final String target = getTarget(component);
+                "AppLayout content must be a Component"));
         if (menu instanceof AppLayoutMenu) {
-            ((AppLayoutMenu) content).updateCurrentRoute(target);
+            ((AppLayoutMenu) menu).updateCurrentRoute(target);
         }
-        beforeNavigate(target, content);
-        setContent(component);
-        afterNavigate(target, content);
-    }
-
-    private static String getTarget(Component content) {
-        if (content instanceof RouteNotFoundError) {
-            return null;
-        } else {
-            return UI.getCurrent().getRouter()
-                .getUrl(content.getClass());
-        }
+        beforeNavigate(target);
+        setContent(target);
+        afterNavigate(target);
     }
 
     /**
      * This hook is called before a navigation is being made into a route
      * which has this router layout as its parent layout.
      *
-     * @param route route that is being navigated to
      * @param content  {@link HasElement} the content component being added
      */
-    protected void beforeNavigate(String route, HasElement content) {
+    protected void beforeNavigate(Component content) {
     }
 
     /**
      * This hook is called after a navigation is made into a route
      * which has this router layout as its parent layout.
      *
-     * @param route route navigated to
      * @param content  {@link HasElement} the content component added
      */
-    protected void afterNavigate(String route, HasElement content) {
+    protected void afterNavigate(Component content) {
     }
 
 

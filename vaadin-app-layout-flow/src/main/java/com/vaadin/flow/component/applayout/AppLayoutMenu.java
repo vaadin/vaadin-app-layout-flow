@@ -30,6 +30,8 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.RouteNotFoundError;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.RouteRegistry;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -127,7 +129,7 @@ public class AppLayoutMenu extends Composite<Tabs> {
      * @param route the route to navigate on click
      */
     public AppLayoutMenuItem addMenuItem(Component icon, String title,
-        String route) {
+        RouterLink route) {
         return addAndReturn(new AppLayoutMenuItem(icon, title, route));
     }
 
@@ -220,13 +222,26 @@ public class AppLayoutMenu extends Composite<Tabs> {
     /**
      * Gets the first {@link AppLayoutMenuItem} targeting a route.
      *
-     * @param route route to match to {@link AppLayoutMenuItem#getRoute()}
+     * @param target route to match to {@link AppLayoutMenuItem#getRoute()}
      * @return {@link AppLayoutMenuItem} wrapped in an {@link Optional}, if found.
      */
-    public Optional<AppLayoutMenuItem> getMenuItemTargetingRoute(String route) {
-        Objects.requireNonNull(route, "Route can not be null");
+    public Optional<AppLayoutMenuItem> getMenuItemTargetingRoute(Component target) {
+        Objects.requireNonNull(target, "Route can not be null");
+        final RouteRegistry registry = UI.getCurrent().getRouter().getRegistry();
         return tabs.getChildren().map(AppLayoutMenuItem.class::cast)
-            .filter(e -> route.equals(e.getRoute())).findFirst();
+            .filter(e -> isLinkTarget(registry,e.getRoute(),target)).findFirst();
+    }
+
+    private static boolean isLinkTarget(RouteRegistry registry, RouterLink link,
+        Component target) {
+        if(link == null) {
+            return false;
+        }
+
+        final Class<?> linkTarget = registry.getNavigationTarget(link.getHref())
+            .orElse(null);
+        return linkTarget != null && linkTarget
+            .isAssignableFrom(target.getClass());
     }
 
     /**
@@ -246,7 +261,7 @@ public class AppLayoutMenu extends Composite<Tabs> {
         return tabs.getElement();
     }
 
-    void updateCurrentRoute(String target) {
+    void updateCurrentRoute(Component target) {
         if(target == null) {
             selectMenuItem(null);
         } else {
