@@ -120,17 +120,6 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * Creates a new empty AppLayoutMenu and sets it as the menu for this AppLayout instance.
-     *
-     * @return {@link AppLayoutMenu} created.
-     */
-    public AppLayoutMenu createMenu() {
-        final AppLayoutMenu menu = new AppLayoutMenu();
-        setMenu(menu);
-        return menu;
-    }
-
-    /**
      * Remove the menu.
      */
     public void removeMenu() {
@@ -149,9 +138,7 @@ public class AppLayout extends Component implements RouterLayout {
         final Component target = content.getElement().getComponent()
             .orElseThrow(() -> new IllegalArgumentException(
                 "AppLayout content must be a Component"));
-        if (menu instanceof AppLayoutMenu) {
-            ((AppLayoutMenu) menu).updateCurrentRoute(target);
-        }
+
         beforeNavigate(target);
         setContent(target);
         afterNavigate(target);

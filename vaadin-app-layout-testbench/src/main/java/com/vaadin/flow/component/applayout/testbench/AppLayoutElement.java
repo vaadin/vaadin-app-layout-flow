@@ -43,8 +43,4 @@ public class AppLayoutElement extends TestBenchElement {
         return $(clazz).attribute("slot", "menu").waitForFirst();
     }
 
-    public AppLayoutMenuElement getAppLayoutMenuElement() {
-        return getMenu(AppLayoutMenuElement.class);
-    }
-
 }
