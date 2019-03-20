@@ -60,7 +60,7 @@ public class AppLayoutTest {
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
-        Assert.assertTrue(children.contains(content));
+        Assert.assertTrue(children.contains(content.getElement()));
     }
 
     @Test

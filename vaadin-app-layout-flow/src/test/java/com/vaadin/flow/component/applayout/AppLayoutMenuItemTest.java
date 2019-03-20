@@ -3,8 +3,13 @@ package com.vaadin.flow.component.applayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.shared.Registration;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,38 +25,16 @@ import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.times;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(UI.class)
-public class AppLayoutMenuItemTest {
+public class AppLayoutMenuItemTest extends PowerMockTest {
 
     private AppLayoutMenuItem systemUnderTest;
 
     @Before
     public void setUp() {
         systemUnderTest = new AppLayoutMenuItem("Home");
-    }
+        Mockito.when(registry.getNavigationTarget("page")).thenReturn(Optional.of(
+            Page.class));
 
-    @Test
-    public void setRoute() {
-
-        UI ui = Mockito.mock(UI.class);
-        systemUnderTest = new AppLayoutMenuItem("Home") {
-            @Override
-            public Optional<UI> getUI() {
-                return Optional.of(ui);
-            }
-        };
-        systemUnderTest.setRoute("");
-        Mockito.doReturn(Optional.of(ui)).when(ui).getUI();
-        Mockito.doNothing().when(ui).navigate(Mockito.anyString());
-        click(systemUnderTest);
-        // Verify that clicking causes a UI navigation to home.
-        Mockito.verify(ui, times(1)).navigate("");
-
-        systemUnderTest.setRoute("Admin");
-        click(systemUnderTest);
-        // Verify that clicking causes a UI navigation to the updated route.
-        Mockito.verify(ui, times(1)).navigate("Admin");
     }
 
     @Test
@@ -121,7 +104,20 @@ public class AppLayoutMenuItemTest {
             .onComponentEvent(Mockito.any());
     }
 
+    @Test
+    public void testConstructor() {
+        final String TITLE = "Page";
+        final AppLayoutMenuItem menuItem = new AppLayoutMenuItem(
+            VaadinIcon.LOCATION_ARROW.create(), TITLE, Page.class);
+        Assert.assertTrue(menuItem.getIcon() instanceof Icon);
+        Assert.assertEquals(TITLE, menuItem.getTitle());
+        Assert.assertEquals(TITLE, menuItem.getElement().getAttribute("title"));
+    }
+
     private void click(AppLayoutMenuItem menuItem) {
         menuItem.fireMenuItemClickEvent();
     }
+
+    @Route("page")
+    static class Page extends Div {}
 }

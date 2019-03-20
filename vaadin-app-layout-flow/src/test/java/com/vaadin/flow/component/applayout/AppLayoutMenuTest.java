@@ -4,27 +4,47 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.Router;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.RouteRegistry;
+import com.vaadin.flow.server.VaadinService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
-public class AppLayoutMenuTest {
+
+public class AppLayoutMenuTest extends PowerMockTest {
     private AppLayoutMenu systemUnderTest;
 
     @Before
     public void setUp() {
         systemUnderTest = new AppLayoutMenu();
+        setupFlowRouting();
     }
-
+    private void setupFlowRouting() {
+        Mockito.when(registry.getNavigationTarget("profile")).thenReturn(Optional.of(
+            Profile.class));
+        Mockito.when(registry.getNavigationTarget("dashboard")).thenReturn(Optional.of(
+            Dashboard.class));
+        Mockito.when(registry.getNavigationTarget("")).thenReturn(Optional.empty());
+    }
     @Test
     public void onAttach_withMenuItems() {
-        systemUnderTest.addMenuItems(new AppLayoutMenuItem("Logout", "Logout"),
+        systemUnderTest.addMenuItems(new AppLayoutMenuItem("Logout", new RouterLink()),
             new AppLayoutMenuItem("Go offline"));
         final Tabs tabs = (Tabs) systemUnderTest.getElement().getComponent()
             .get();
@@ -36,7 +56,7 @@ public class AppLayoutMenuTest {
 
     @Test
     public void onAttach_withMenuItems_explicit_selection() {
-        final AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "Home");
+        final AppLayoutMenuItem home = new AppLayoutMenuItem("Home", new RouterLink());
         systemUnderTest.addMenuItems(home, new AppLayoutMenuItem("Go offline"));
         systemUnderTest.selectMenuItem(home);
         final Tabs tabs = (Tabs) systemUnderTest.getElement().getComponent()
@@ -52,10 +72,10 @@ public class AppLayoutMenuTest {
     public void setMenuItems() {
         Assert.assertEquals(0, systemUnderTest.getElement().getChildCount());
 
-        systemUnderTest.addMenuItems(new AppLayoutMenuItem("Home", ""));
+        systemUnderTest.addMenuItems(new AppLayoutMenuItem("Home", new RouterLink()));
 
         AppLayoutMenuItem[] newMenuItems = Stream
-            .generate(() -> new AppLayoutMenuItem("Route", "route")).limit(3)
+            .generate(() -> new AppLayoutMenuItem("Route", new RouterLink())).limit(3)
             .toArray(AppLayoutMenuItem[]::new);
 
         systemUnderTest.setMenuItems(newMenuItems);
@@ -67,13 +87,13 @@ public class AppLayoutMenuTest {
     public void addMenuItems() {
         Assert.assertEquals(0, systemUnderTest.getElement().getChildCount());
 
-        systemUnderTest.addMenuItems(new AppLayoutMenuItem("Home", ""));
+        systemUnderTest.addMenuItems(new AppLayoutMenuItem("Home", new RouterLink()));
         Assert.assertEquals(1, systemUnderTest.getElement().getChildCount());
     }
 
     @Test
     public void removeMenuItem() {
-        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", new RouterLink());
         systemUnderTest.addMenuItems(home);
         Assert.assertEquals(1, systemUnderTest.getElement().getChildCount());
 
@@ -83,12 +103,12 @@ public class AppLayoutMenuTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void removeMenuItem_invalidItem() {
-        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", new RouterLink());
         systemUnderTest.addMenuItems(home);
 
         Tabs otherTabs = new Tabs();
         AppLayoutMenuItem otherMenuItem = new AppLayoutMenuItem("Profile",
-            "profile");
+            new RouterLink());
         otherTabs.add(otherMenuItem);
 
         systemUnderTest.removeMenuItem(otherMenuItem);
@@ -96,41 +116,41 @@ public class AppLayoutMenuTest {
 
     @Test
     public void getMenuItemTargetingRoute() {
-        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
-        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", new RouterLink());
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", Profile.class);
         AppLayoutMenuItem settings = new AppLayoutMenuItem("Settings",
-            "settings");
+            new RouterLink());
         systemUnderTest.addMenuItems(home, profile, settings);
 
         Assert.assertEquals(profile,
-            systemUnderTest.getMenuItemTargetingRoute("profile").get());
+            systemUnderTest.getMenuItemTargetingRoute(new Profile()).get());
     }
 
     @Test
     public void getMenuItemTargetingRoute_none() {
-        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
-        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", Profile.class);
         systemUnderTest.addMenuItems(home, profile);
 
         Assert.assertFalse(
-            systemUnderTest.getMenuItemTargetingRoute("dashboard").isPresent());
+            systemUnderTest.getMenuItemTargetingRoute(new Dashboard()).isPresent());
     }
 
     @Test
     public void getMenuItemTargetingRoute_duplicate() {
-        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", Profile.class);
         AppLayoutMenuItem settings = new AppLayoutMenuItem("Settings",
-            "profile");
+            Profile.class);
         systemUnderTest.addMenuItems(profile, settings);
 
         Assert.assertEquals(profile,
-            systemUnderTest.getMenuItemTargetingRoute("profile").get());
+            systemUnderTest.getMenuItemTargetingRoute(new Profile()).get());
     }
 
     @Test
     public void selectMenuItem() {
-        AppLayoutMenuItem home = new AppLayoutMenuItem("Home", "");
-        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", "profile");
+        AppLayoutMenuItem home = new AppLayoutMenuItem("Home");
+        AppLayoutMenuItem profile = new AppLayoutMenuItem("Profile", Profile.class);
         AppLayoutMenuItem logout = new AppLayoutMenuItem("Logout");
         systemUnderTest.addMenuItems(home, profile, logout);
 
@@ -201,7 +221,7 @@ public class AppLayoutMenuTest {
     public void addMenuItem_icon_title_and_route() {
         final Component icon = new Div();
         final String title = "Title";
-        final String route = "route";
+        final RouterLink route = new RouterLink();
         AppLayoutMenuItem appLayoutMenuItem = systemUnderTest
             .addMenuItem(icon, title, route);
         Assert.assertEquals(icon, appLayoutMenuItem.getIcon());
@@ -250,4 +270,8 @@ public class AppLayoutMenuTest {
         Mockito.verify(listener).onComponentEvent(Mockito.any());
     }
 
+    @Route("profile")
+    static class Profile extends Div{}
+    @Route("dashboard")
+    static class Dashboard extends Div{}
 }
