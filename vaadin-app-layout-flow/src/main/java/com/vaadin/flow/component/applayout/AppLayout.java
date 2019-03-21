@@ -40,33 +40,7 @@ import java.util.Objects;
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
 public class AppLayout extends Component implements RouterLayout {
 
-    private Component branding;
     private Component content;
-    private Component menu;
-
-    /**
-     * Sets the component into branding area
-     *
-     * @param branding {@link Component} to set into branding area
-     */
-    public void setBranding(Component branding) {
-        Objects.requireNonNull(branding, "Branding cannot be null");
-
-        removeBranding();
-
-        this.branding = branding;
-        branding.getElement().setAttribute("slot", "branding");
-
-        getElement().appendChild(branding.getElement());
-    }
-
-    /**
-     * Clears the branding area
-     */
-    public void removeBranding() {
-        remove(this.branding);
-        this.branding = null;
-    }
 
     /**
      * Returns the {@link Element}
@@ -96,35 +70,6 @@ public class AppLayout extends Component implements RouterLayout {
     public void removeContent() {
         remove(this.content);
         this.content = null;
-    }
-
-    /**
-     * @return {@link Element} displayed at the content area.
-     */
-    public Component getMenu() {
-        return menu;
-    }
-
-    /**
-     * Sets the component to be placed in the menu slot.
-     *
-     * @param menu {@link HasElement} to placed in the menu slot.
-     */
-    public void setMenu(Component menu) {
-        Objects.requireNonNull(menu, "Menu cannot be null");
-
-        removeMenu();
-        this.menu = menu;
-        menu.getElement().setAttribute("slot", "menu");
-        getElement().appendChild(menu.getElement());
-    }
-
-    /**
-     * Remove the menu.
-     */
-    public void removeMenu() {
-        remove(this.menu);
-        this.menu = null;
     }
 
     private void remove(Component component) {
@@ -161,6 +106,5 @@ public class AppLayout extends Component implements RouterLayout {
      */
     protected void afterNavigate(Component content) {
     }
-
 
 }
