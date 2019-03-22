@@ -1,7 +1,5 @@
 package com.vaadin.flow.component.applayout;
 
-import java.util.Objects;
-
 /*
  * #%L
  * Vaadin App Layout
@@ -21,6 +19,8 @@ import java.util.Objects;
  * limitations under the License.
  * #L%
  */
+
+import java.util.Objects;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
