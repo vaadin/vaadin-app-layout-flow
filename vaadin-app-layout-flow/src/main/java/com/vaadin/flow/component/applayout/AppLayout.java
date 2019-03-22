@@ -23,6 +23,7 @@ package com.vaadin.flow.component.applayout;
 import java.util.Objects;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.PropertyDescriptor;
 import com.vaadin.flow.component.PropertyDescriptors;
@@ -37,7 +38,8 @@ import com.vaadin.flow.router.RouterLayout;
  */
 @Tag("vaadin-app-layout")
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
-public class AppLayout extends Component implements RouterLayout {
+public class AppLayout extends Component implements RouterLayout,
+    HasComponents {
     private static final PropertyDescriptor<String, String> orientationProperty = PropertyDescriptors
         .propertyWithDefault("orientation",
             Orientation.VERTICAL.toPropertyValue());
@@ -48,7 +50,7 @@ public class AppLayout extends Component implements RouterLayout {
     private static final PropertyDescriptor<Boolean, Boolean> overlayProperty = PropertyDescriptors
         .propertyWithDefault("overlay", false);
 
-    private Component content;
+    private Component mainContent;
 
     public Orientation getOrientation() {
         return Orientation.fromPropertyValue(orientationProperty.get(this));
@@ -83,10 +85,10 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * Returns the {@link Element}
+     * Returns the displayed content
      */
-    public Component getContent() {
-        return content;
+    public Component getMainContent() {
+        return mainContent;
     }
 
     /**
@@ -94,12 +96,12 @@ public class AppLayout extends Component implements RouterLayout {
      *
      * @param content {@link Component} to display in the content area
      */
-    public void setContent(Component content) {
+    public void setMainContent(Component content) {
         Objects.requireNonNull(content, "Content cannot be null");
 
-        removeContent();
+        removeMainContent();
 
-        this.content = content;
+        this.mainContent = content;
         content.getElement().removeAttribute("slot");
         getElement().appendChild(content.getElement());
     }
@@ -107,9 +109,9 @@ public class AppLayout extends Component implements RouterLayout {
     /**
      * Removes the displayed content.
      */
-    public void removeContent() {
-        remove(this.content);
-        this.content = null;
+    public void removeMainContent() {
+        remove(this.mainContent);
+        this.mainContent = null;
     }
 
     private void remove(Component component) {
@@ -119,13 +121,29 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     @Override
+    public void remove(Component... components) {
+        HasComponents.super.remove();
+        for(Component component: components) {
+            if(component.equals(this.mainContent)) {
+                removeMainContent();
+            }
+        }
+    }
+
+    @Override
+    public void removeAll() {
+        HasComponents.super.removeAll();
+        this.mainContent = null;
+    }
+
+    @Override
     public void showRouterLayoutContent(HasElement content) {
         final Component target = content.getElement().getComponent()
             .orElseThrow(() -> new IllegalArgumentException(
                 "AppLayout content must be a Component"));
 
         beforeNavigate(target);
-        setContent(target);
+        setMainContent(target);
         afterNavigate(target);
     }
 
