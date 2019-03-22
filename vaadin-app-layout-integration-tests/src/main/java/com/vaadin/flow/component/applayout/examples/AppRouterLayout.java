@@ -26,12 +26,6 @@ public class AppRouterLayout extends AppLayout {
 
     private static final int NOTIFICATION_DURATION = 10000;
 
-
-    public AppRouterLayout() {
-        this.setBranding(new Span("Vaadin"));
-        this.setMenu(createMenu());
-    }
-
     private static Component createMenu() {
         final HorizontalLayout layout = new HorizontalLayout();
         layout.add(new RouterLink("Page 1",Page1.class));

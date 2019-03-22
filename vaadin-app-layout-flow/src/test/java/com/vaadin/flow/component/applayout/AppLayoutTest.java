@@ -21,39 +21,6 @@ public class AppLayoutTest {
     }
 
     @Test
-    public void setBranding_Element() {
-        H2 branding = new H2("Vaadin");
-        systemUnderTest.setBranding(branding);
-
-        // Verify that branding goes to the branding slot.
-        long brandingCount = systemUnderTest.getElement().getChildren()
-            .filter(e -> e.getAttribute("slot").equals("branding")).count();
-        Assert.assertEquals(1, brandingCount);
-    }
-
-    @Test
-    public void setBranding_Component() {
-        Component branding = new Div();
-        Assert.assertNull(branding.getElement().getAttribute("slot"));
-        systemUnderTest.setBranding(branding);
-        Assert.assertEquals("branding",
-            branding.getElement().getAttribute("slot"));
-        Assert.assertTrue(
-            systemUnderTest.getChildren().anyMatch(branding::equals));
-    }
-
-    @Test
-    public void removeBranding() {
-        H2 branding = new H2("Vaadin");
-        systemUnderTest.setBranding(branding);
-
-        systemUnderTest.removeBranding();
-
-        Assert.assertTrue(systemUnderTest.getElement().getChildren()
-            .noneMatch(e -> e.getAttribute("slot").equals("branding")));
-    }
-
-    @Test
     public void setContent() {
         Div content = new Div();
         systemUnderTest.setContent(content);
