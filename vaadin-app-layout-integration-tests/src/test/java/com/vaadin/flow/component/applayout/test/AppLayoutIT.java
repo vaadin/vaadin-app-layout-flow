@@ -47,18 +47,4 @@ public class AppLayoutIT extends AbstractParallelTest {
                 .getText().contains("Could not navigate to"));
 
     }
-
-    @Test
-    public void menuWithRoutingLinksWorks() {
-        getDriver().get(getBaseURL() + "/Page3");
-        Assert.assertEquals("This is Page 3",
-            $(AppLayoutElement.class).waitForFirst().getContent().getText());
-
-        TestBenchElement linkPage4 = $(AppLayoutElement.class).waitForFirst().getMenu(TestBenchElement.class).$("a").get(1);
-        Assert.assertEquals("Page 4",linkPage4.getText());
-        linkPage4.click();
-        Assert.assertEquals("This is Page 4",
-            $(AppLayoutElement.class).waitForFirst().getContent().getText());
-
-    }
 }
