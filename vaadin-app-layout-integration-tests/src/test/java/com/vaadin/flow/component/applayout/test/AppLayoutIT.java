@@ -1,11 +1,10 @@
 package com.vaadin.flow.component.applayout.test;
 
-import com.vaadin.flow.component.applayout.testbench.AppLayoutElement;
-import com.vaadin.flow.component.orderedlayout.testbench.HorizontalLayoutElement;
-import com.vaadin.testbench.TestBenchElement;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.vaadin.flow.component.applayout.testbench.AppLayoutElement;
 
 public class AppLayoutIT extends AbstractParallelTest {
 

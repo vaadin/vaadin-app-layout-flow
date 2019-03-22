@@ -1,15 +1,14 @@
 package com.vaadin.flow.component.applayout;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.dom.Element;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.dom.Element;
 
 public class AppLayoutTest {
 
@@ -41,7 +40,7 @@ public class AppLayoutTest {
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
-        Assert.assertFalse(children.contains(content));
+        Assert.assertFalse(children.contains(content.getElement()));
         Assert.assertNull(systemUnderTest.getContent());
     }
 

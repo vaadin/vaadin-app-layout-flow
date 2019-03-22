@@ -1,14 +1,8 @@
 package com.vaadin.flow.component.applayout;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
 
@@ -24,6 +18,7 @@ public class AppLayoutView extends DemoView {
         basicAppLayout();
     }
 
+    @SuppressWarnings("unused")
     private void basicAppLayout() {
         // @formatter:off
         // begin-source-example

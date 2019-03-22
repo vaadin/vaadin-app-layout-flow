@@ -1,5 +1,7 @@
 package com.vaadin.flow.component.applayout;
 
+import java.util.Objects;
+
 /*
  * #%L
  * Vaadin App Layout
@@ -23,14 +25,9 @@ package com.vaadin.flow.component.applayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.dom.Element;
-import com.vaadin.flow.router.RouteNotFoundError;
 import com.vaadin.flow.router.RouterLayout;
-import com.vaadin.flow.router.RouterLink;
-
-import java.util.Objects;
 
 /**
  * Server-side component for the {@code <vaadin-app-layout>} element.
