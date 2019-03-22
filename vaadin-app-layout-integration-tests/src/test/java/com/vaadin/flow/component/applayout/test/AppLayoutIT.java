@@ -15,28 +15,17 @@ public class AppLayoutIT extends AbstractParallelTest {
     }
 
     @Test
-    public void branding() {
-        Assert.assertEquals("Vaadin",
-                $(AppLayoutElement.class).waitForFirst().getBranding().getText());
-    }
-
-    @Test
     public void content() {
         Assert.assertEquals("Welcome home",
                 $(AppLayoutElement.class).waitForFirst().getContent().getText());
-    }
 
-    @Test
-    public void routingMenuItems() {
+        getDriver().get(getBaseURL() + "/Page1");
+        Assert.assertEquals("This is Page 1",
+            $(AppLayoutElement.class).waitForFirst().getContent().getText());
 
-        Assert.assertEquals("Welcome home",
-                $(AppLayoutElement.class).waitForFirst().getContent().getText());
-
-        $(AppLayoutElement.class).waitForFirst().getMenu(HorizontalLayoutElement.class)
-                .$("a[href=\"Page2\"]").waitForFirst().click();
-
+        getDriver().get(getBaseURL() + "/Page2");
         Assert.assertEquals("This is Page 2",
-                $(AppLayoutElement.class).waitForFirst().getContent().getText());
+            $(AppLayoutElement.class).waitForFirst().getContent().getText());
 
     }
 
