@@ -37,8 +37,8 @@ import java.util.Objects;
  */
 @Tag("vaadin-app-layout")
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
-public class AppLayout extends Component implements RouterLayout,
-    HasComponents {
+public class AppLayout extends Component
+    implements RouterLayout, HasComponents {
     private static final PropertyDescriptor<String, String> orientationProperty = PropertyDescriptors
         .propertyWithDefault("orientation",
             Orientation.VERTICAL.toPropertyValue());
@@ -96,13 +96,14 @@ public class AppLayout extends Component implements RouterLayout,
      * @param content {@link Component} to display in the content area
      */
     public void setMainContent(Component content) {
-        Objects.requireNonNull(content, "Content cannot be null");
 
         removeMainContent();
 
-        this.mainContent = content;
-        content.getElement().removeAttribute("slot");
-        getElement().appendChild(content.getElement());
+        if(content != null) {
+            this.mainContent = content;
+            content.getElement().removeAttribute("slot");
+            getElement().appendChild(content.getElement());
+        }
     }
 
     /**
@@ -122,8 +123,8 @@ public class AppLayout extends Component implements RouterLayout,
     @Override
     public void remove(Component... components) {
         HasComponents.super.remove();
-        for(Component component: components) {
-            if(component.equals(this.mainContent)) {
+        for (Component component : components) {
+            if (component.equals(this.mainContent)) {
                 removeMainContent();
             }
         }
