@@ -1,5 +1,7 @@
 package com.vaadin.flow.component.applayout.testbench;
 
+import java.util.List;
+
 /*
  * #%L
  * Vaadin App Layout Testbench API
@@ -23,13 +25,11 @@ package com.vaadin.flow.component.applayout.testbench;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elementsbase.Element;
 
-import java.util.List;
-import java.util.Optional;
-
 @Element("vaadin-app-layout")
 public class AppLayoutElement extends TestBenchElement {
 
-    public List<TestBenchElement> getContent() {
+    @SuppressWarnings("unchecked")
+	public List<TestBenchElement> getContent() {
         TestBenchElement contentPlaceholder = $(TestBenchElement.class)
             .attribute("content ", "").first();
 

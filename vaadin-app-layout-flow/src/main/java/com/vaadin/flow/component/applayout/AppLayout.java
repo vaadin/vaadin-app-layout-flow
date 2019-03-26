@@ -29,8 +29,6 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.router.RouterLayout;
 
-import java.util.Objects;
-
 /**
  * Server-side component for the {@code <vaadin-app-layout>} element.
  * Provides a quick and easy way to get a common application layout.
