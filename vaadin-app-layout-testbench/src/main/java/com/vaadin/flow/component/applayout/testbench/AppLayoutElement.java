@@ -9,9 +9,9 @@ package com.vaadin.flow.component.applayout.testbench;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,14 +23,55 @@ package com.vaadin.flow.component.applayout.testbench;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elementsbase.Element;
 
+import java.util.List;
+import java.util.Optional;
+
 @Element("vaadin-app-layout")
 public class AppLayoutElement extends TestBenchElement {
 
-    public TestBenchElement getContent() {
-        TestBenchElement contentPlaceholder = $(TestBenchElement.class).attribute("part", "content").first();
+    public List<TestBenchElement> getContent() {
+        TestBenchElement contentPlaceholder = $(TestBenchElement.class)
+            .attribute("content ", "").first();
 
-        return (TestBenchElement) executeScript("return arguments[0].firstElementChild.assignedNodes()[0];",
-                contentPlaceholder);
+        return (List<TestBenchElement>) executeScript(
+            "return arguments[0].firstElementChild.assignedNodes();",
+            contentPlaceholder);
+    }
+
+    public String getOrientation() {
+        return getPropertyString("orientation");
+    }
+
+    public void setOrientation(String orientation) {
+        setProperty("orientation", orientation);
+    }
+
+    public boolean isDrawerFirst() {
+        return Boolean.TRUE.equals(getPropertyBoolean("drawerFirst"));
+    }
+
+    public void setDrawerFirst(boolean drawerFirst) {
+        setProperty("drawerFirst", drawerFirst);
+    }
+
+    public boolean isDrawerOpened() {
+        return getPropertyBoolean("drawerOpened");
+    }
+
+    public void setDrawerOpened(boolean drawerOpened) {
+        setProperty("drawerOpened", drawerOpened);
+    }
+
+    public boolean isOverlay() {
+        return getPropertyBoolean("overlay");
+    }
+
+    public void setOverlay(boolean overlay) {
+        setProperty("overlay", overlay);
+    }
+
+    public DrawerToggleElement getDrawerToggle() {
+        return $(DrawerToggleElement.class).first();
     }
 
 }
