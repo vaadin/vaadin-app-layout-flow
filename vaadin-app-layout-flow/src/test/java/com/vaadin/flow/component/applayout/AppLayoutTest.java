@@ -1,14 +1,18 @@
 package com.vaadin.flow.component.applayout;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.Assert;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.dom.Element;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.dom.Element;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class AppLayoutTest {
 
@@ -26,7 +30,7 @@ public class AppLayoutTest {
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
-        Assert.assertTrue(children.contains(content.getElement()));
+        assertTrue(children.contains(content.getElement()));
     }
 
     @Test
@@ -40,8 +44,26 @@ public class AppLayoutTest {
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
-        Assert.assertFalse(children.contains(content.getElement()));
-        Assert.assertNull(systemUnderTest.getMainContent());
+        assertFalse(children.contains(content.getElement()));
+        assertNull(systemUnderTest.getMainContent());
+    }
+
+    @Test
+    public void addToDrawer() {
+        final Component component = new Div();
+        systemUnderTest.addToDrawer(component);
+        assertEquals("drawer",
+            component.getElement().getAttribute("slot"));
+        assertEquals(systemUnderTest, component.getParent().orElse(null));
+    }
+
+    @Test
+    public void addToNavbar() {
+        final Component component = new Div();
+        systemUnderTest.addToNavbar(component);
+        assertEquals("navbar",
+            component.getElement().getAttribute("slot"));
+        assertEquals(systemUnderTest, component.getParent().orElse(null));
     }
 
 }
