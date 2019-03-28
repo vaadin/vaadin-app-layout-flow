@@ -18,7 +18,7 @@ public class AppRouterLayout extends AppLayout {
         final RouterLink page1 = new RouterLink("Page 1", Page1.class);
         final RouterLink page2 = new RouterLink("Page 2", Page2.class);
         final VerticalLayout layout = new VerticalLayout(home, page1, page2);
-        layout.getElement().setAttribute("slot","drawer");
-        add(drawerToggle, layout);
+        addToDrawer(layout);
+        addToNavbar(drawerToggle);
     }
 }

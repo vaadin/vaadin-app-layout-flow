@@ -9,9 +9,9 @@ package com.vaadin.flow.component.applayout;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -81,11 +81,34 @@ public class AppLayout extends Component implements RouterLayout {
 
         removeMainContent();
 
-        if(content != null) {
+        if (content != null) {
             this.mainContent = content;
             content.getElement().removeAttribute("slot");
-            getElement().appendChild(content.getElement());
+            add(content);
         }
+    }
+
+    public void addToDrawer(Component... components) {
+        addToSlot("drawer", components);
+    }
+
+    public void addToNavbar(Component... components) {
+        addToSlot("navbar", components);
+    }
+
+    private void addToSlot(String slot, Component... components) {
+        for (Component component : components) {
+            setSlot(component, slot);
+            add(component);
+        }
+    }
+
+    private void add(Component component) {
+        getElement().appendChild(component.getElement());
+    }
+
+    private static void setSlot(Component component, String slot) {
+        component.getElement().setAttribute("slot", slot);
     }
 
     /**
@@ -108,26 +131,6 @@ public class AppLayout extends Component implements RouterLayout {
             .orElseThrow(() -> new IllegalArgumentException(
                 "AppLayout content must be a Component"));
 
-        beforeNavigate(target);
         setMainContent(target);
-        afterNavigate(target);
-    }
-
-    /**
-     * This hook is called before a navigation is being made into a route
-     * which has this router layout as its parent layout.
-     *
-     * @param content {@link HasElement} the content component being added
-     */
-    protected void beforeNavigate(Component content) {
-    }
-
-    /**
-     * This hook is called after a navigation is made into a route
-     * which has this router layout as its parent layout.
-     *
-     * @param content {@link HasElement} the content component added
-     */
-    protected void afterNavigate(Component content) {
     }
 }
