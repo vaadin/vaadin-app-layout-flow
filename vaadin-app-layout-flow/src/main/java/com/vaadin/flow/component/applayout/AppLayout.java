@@ -21,7 +21,6 @@ package com.vaadin.flow.component.applayout;
  */
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.PropertyDescriptor;
 import com.vaadin.flow.component.PropertyDescriptors;
@@ -43,7 +42,7 @@ public class AppLayout extends Component implements RouterLayout {
     private static final PropertyDescriptor<Boolean, Boolean> overlayProperty = PropertyDescriptors
         .propertyWithDefault("overlay", false);
 
-    private Component mainContent;
+    private Component content;
 
     public boolean isDrawerFirst() {
         return drawerFirstProperty.get(this);
@@ -68,8 +67,8 @@ public class AppLayout extends Component implements RouterLayout {
     /**
      * Returns the displayed content
      */
-    public Component getMainContent() {
-        return mainContent;
+    public Component getContent() {
+        return content;
     }
 
     /**
@@ -77,12 +76,12 @@ public class AppLayout extends Component implements RouterLayout {
      *
      * @param content {@link Component} to display in the content area
      */
-    public void setMainContent(Component content) {
+    public void setContent(Component content) {
 
-        removeMainContent();
+        removeContent();
 
         if (content != null) {
-            this.mainContent = content;
+            this.content = content;
             content.getElement().removeAttribute("slot");
             add(content);
         }
@@ -114,9 +113,9 @@ public class AppLayout extends Component implements RouterLayout {
     /**
      * Removes the displayed content.
      */
-    private void removeMainContent() {
-        remove(this.mainContent);
-        this.mainContent = null;
+    private void removeContent() {
+        remove(this.content);
+        this.content = null;
     }
 
     private void remove(Component component) {
@@ -131,6 +130,6 @@ public class AppLayout extends Component implements RouterLayout {
             .orElseThrow(() -> new IllegalArgumentException(
                 "AppLayout content must be a Component"));
 
-        setMainContent(target);
+        setContent(target);
     }
 }

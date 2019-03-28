@@ -24,9 +24,9 @@ public class AppLayoutTest {
     }
 
     @Test
-    public void setMainContent() {
+    public void setContent() {
         Div content = new Div();
-        systemUnderTest.setMainContent(content);
+        systemUnderTest.setContent(content);
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
@@ -34,18 +34,18 @@ public class AppLayoutTest {
     }
 
     @Test
-    public void setMainContentNull() {
-        systemUnderTest.setMainContent(null); // No NPE.
+    public void setContentNull() {
+        systemUnderTest.setContent(null); // No NPE.
 
         Div content = new Div();
-        systemUnderTest.setMainContent(content);
+        systemUnderTest.setContent(content);
 
-        systemUnderTest.setMainContent(null);
+        systemUnderTest.setContent(null);
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
         assertFalse(children.contains(content.getElement()));
-        assertNull(systemUnderTest.getMainContent());
+        assertNull(systemUnderTest.getContent());
     }
 
     @Test
