@@ -66,10 +66,6 @@ public class AppLayout extends Component
         return overlayProperty.get(this);
     }
 
-    public void setOverlay(boolean overlay) {
-        overlayProperty.set(this, overlay);
-    }
-
     /**
      * Returns the displayed content
      */

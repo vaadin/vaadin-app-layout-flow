@@ -58,10 +58,6 @@ public class AppLayoutElement extends TestBenchElement {
         return getPropertyBoolean("overlay");
     }
 
-    public void setOverlay(boolean overlay) {
-        setProperty("overlay", overlay);
-    }
-
     public DrawerToggleElement getDrawerToggle() {
         return $(DrawerToggleElement.class).first();
     }
