@@ -35,8 +35,7 @@ import com.vaadin.flow.router.RouterLayout;
  */
 @Tag("vaadin-app-layout")
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
-public class AppLayout extends Component
-    implements RouterLayout, HasComponents {
+public class AppLayout extends Component implements RouterLayout {
     private static final PropertyDescriptor<Boolean, Boolean> drawerFirstProperty = PropertyDescriptors
         .propertyWithDefault("drawerFirst", false);
     private static final PropertyDescriptor<Boolean, Boolean> drawerOpenedProperty = PropertyDescriptors
@@ -92,7 +91,7 @@ public class AppLayout extends Component
     /**
      * Removes the displayed content.
      */
-    public void removeMainContent() {
+    private void removeMainContent() {
         remove(this.mainContent);
         this.mainContent = null;
     }
@@ -101,22 +100,6 @@ public class AppLayout extends Component
         if (component != null) {
             component.getElement().removeFromParent();
         }
-    }
-
-    @Override
-    public void remove(Component... components) {
-        HasComponents.super.remove();
-        for (Component component : components) {
-            if (component.equals(this.mainContent)) {
-                removeMainContent();
-            }
-        }
-    }
-
-    @Override
-    public void removeAll() {
-        HasComponents.super.removeAll();
-        this.mainContent = null;
     }
 
     @Override

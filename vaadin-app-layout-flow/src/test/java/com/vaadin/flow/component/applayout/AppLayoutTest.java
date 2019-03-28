@@ -30,13 +30,13 @@ public class AppLayoutTest {
     }
 
     @Test
-    public void removeMainContent() {
-        systemUnderTest.removeMainContent(); // No NPE.
+    public void setMainContentNull() {
+        systemUnderTest.setMainContent(null); // No NPE.
 
         Div content = new Div();
         systemUnderTest.setMainContent(content);
 
-        systemUnderTest.removeMainContent();
+        systemUnderTest.setMainContent(null);
 
         List<Element> children = systemUnderTest.getElement().getChildren()
             .collect(Collectors.toList());
