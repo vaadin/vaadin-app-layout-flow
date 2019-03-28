@@ -38,14 +38,6 @@ public class AppLayoutElement extends TestBenchElement {
             contentPlaceholder);
     }
 
-    public String getOrientation() {
-        return getPropertyString("orientation");
-    }
-
-    public void setOrientation(String orientation) {
-        setProperty("orientation", orientation);
-    }
-
     public boolean isDrawerFirst() {
         return Boolean.TRUE.equals(getPropertyBoolean("drawerFirst"));
     }

@@ -37,7 +37,6 @@ public class AppLayoutIT extends AbstractParallelTest {
     public void properties() {
         final AppLayoutElement layout = $(AppLayoutElement.class)
             .waitForFirst();
-        Assert.assertEquals("vertical", layout.getOrientation());
         Assert.assertEquals(true, layout.isDrawerOpened());
         Assert.assertEquals(false, layout.isDrawerFirst());
         Assert.assertEquals(false, layout.isOverlay());

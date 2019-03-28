@@ -37,9 +37,6 @@ import com.vaadin.flow.router.RouterLayout;
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
 public class AppLayout extends Component
     implements RouterLayout, HasComponents {
-    private static final PropertyDescriptor<String, String> orientationProperty = PropertyDescriptors
-        .propertyWithDefault("orientation",
-            Orientation.VERTICAL.toPropertyValue());
     private static final PropertyDescriptor<Boolean, Boolean> drawerFirstProperty = PropertyDescriptors
         .propertyWithDefault("drawerFirst", false);
     private static final PropertyDescriptor<Boolean, Boolean> drawerOpenedProperty = PropertyDescriptors
@@ -48,14 +45,6 @@ public class AppLayout extends Component
         .propertyWithDefault("overlay", false);
 
     private Component mainContent;
-
-    public Orientation getOrientation() {
-        return Orientation.fromPropertyValue(orientationProperty.get(this));
-    }
-
-    public void setOrientation(Orientation orientation) {
-        orientationProperty.set(this, orientation.toPropertyValue());
-    }
 
     public boolean isDrawerFirst() {
         return drawerFirstProperty.get(this);
@@ -161,21 +150,5 @@ public class AppLayout extends Component
      * @param content {@link HasElement} the content component added
      */
     protected void afterNavigate(Component content) {
-    }
-
-    public enum Orientation {
-        VERTICAL, HORIZONTAL;
-
-        private String toPropertyValue() {
-            return this.name().toLowerCase();
-        }
-
-        private static Orientation fromPropertyValue(String property) {
-            if (property == null) {
-                return null;
-            } else {
-                return Orientation.valueOf(property.toUpperCase());
-            }
-        }
     }
 }
