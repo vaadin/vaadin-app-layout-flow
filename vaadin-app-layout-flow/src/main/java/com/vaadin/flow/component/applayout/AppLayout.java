@@ -95,6 +95,12 @@ public class AppLayout extends Component implements RouterLayout {
         addToSlot("navbar", components);
     }
 
+    public void remove(Component... components) {
+        for (Component component : components) {
+            remove(component);
+        }
+    }
+
     private void addToSlot(String slot, Component... components) {
         for (Component component : components) {
             setSlot(component, slot);

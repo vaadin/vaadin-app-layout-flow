@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -52,18 +53,45 @@ public class AppLayoutTest {
     public void addToDrawer() {
         final Component component = new Div();
         systemUnderTest.addToDrawer(component);
-        assertEquals("drawer",
-            component.getElement().getAttribute("slot"));
-        assertEquals(systemUnderTest, component.getParent().orElse(null));
+        assertEquals("drawer", component.getElement().getAttribute("slot"));
+        assertEquals(systemUnderTest, getParent(component));
     }
 
     @Test
     public void addToNavbar() {
         final Component component = new Div();
         systemUnderTest.addToNavbar(component);
-        assertEquals("navbar",
-            component.getElement().getAttribute("slot"));
-        assertEquals(systemUnderTest, component.getParent().orElse(null));
+        assertEquals("navbar", component.getElement().getAttribute("slot"));
+        assertEquals(systemUnderTest, getParent(component));
     }
 
+    @Test
+    public void removeContent() {
+        testRemoval(systemUnderTest::setContent);
+    }
+
+    @Test
+    public void removeDrawer() {
+        testRemoval(systemUnderTest::addToDrawer);
+    }
+
+    @Test
+    public void removeNavbar() {
+        testRemoval(systemUnderTest::addToNavbar);
+    }
+
+    private void testRemoval(Consumer<Component> adder) {
+        final Component component = new Div();
+        assertNull(getParent(component));
+
+        adder.accept(component);
+        assertEquals(systemUnderTest, getParent(component));
+
+        systemUnderTest.remove(component);
+        assertNull(getParent(component));
+    }
+
+    private static Component getParent(Component component) {
+        return component.getParent().orElse(null);
+    }
 }
