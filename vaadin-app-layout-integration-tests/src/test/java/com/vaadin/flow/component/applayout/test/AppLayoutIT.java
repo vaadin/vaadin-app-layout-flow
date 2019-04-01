@@ -18,18 +18,18 @@ public class AppLayoutIT extends AbstractParallelTest {
         final AppLayoutElement layout = $(AppLayoutElement.class)
             .waitForFirst();
         Assert
-            .assertEquals("Welcome home", layout.getContent().get(1).getText());
+            .assertEquals("Welcome home", layout.getContent().getText());
 
         Assert.assertNotNull(layout.getDrawerToggle());
 
         layout.$("a").attribute("href", "Page1").first().click();
         Assert.assertEquals("This is Page 1",
-            $(AppLayoutElement.class).waitForFirst().getContent().get(1)
+            $(AppLayoutElement.class).waitForFirst().getContent()
                 .getText());
 
         layout.$("a").attribute("href", "Page2").first().click();
         Assert.assertEquals("This is Page 2",
-            $(AppLayoutElement.class).waitForFirst().getContent().get(1)
+            $(AppLayoutElement.class).waitForFirst().getContent()
                 .getText());
     }
 
@@ -46,7 +46,7 @@ public class AppLayoutIT extends AbstractParallelTest {
     public void navigateToNotFound() {
         getDriver().get(getBaseURL() + "/nonexistingpage");
         Assert.assertTrue(
-            $(AppLayoutElement.class).waitForFirst().getContent().get(1)
+            $(AppLayoutElement.class).waitForFirst().getContent()
                 .getText().contains("Could not navigate to"));
 
     }
