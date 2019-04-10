@@ -24,6 +24,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.PropertyDescriptor;
 import com.vaadin.flow.component.PropertyDescriptors;
+import com.vaadin.flow.component.Synchronize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.router.RouterLayout;
@@ -51,6 +52,7 @@ public class AppLayout extends Component implements RouterLayout {
      * <li>If drawer-first is set, then the drawer will move the navbar, taking the full available height.</li>
      * </ul>
      */
+    @Synchronize("drawer-first-changed")
     public boolean isDrawerFirst() {
         return drawerFirstProperty.get(this);
     }
@@ -71,6 +73,7 @@ public class AppLayout extends Component implements RouterLayout {
      * <li>{@code false} for mobile size views</li>
      * </ul>
      */
+    @Synchronize("drawer-opened-changed")
     public boolean isDrawerOpened() {
         return drawerOpenedProperty.get(this);
     }
@@ -83,6 +86,7 @@ public class AppLayout extends Component implements RouterLayout {
         drawerOpenedProperty.set(this, drawerOpened);
     }
 
+    @Synchronize("overlay-changed")
     public boolean isOverlay() {
         return overlayProperty.get(this);
     }
