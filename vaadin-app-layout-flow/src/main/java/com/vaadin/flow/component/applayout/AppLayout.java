@@ -151,10 +151,12 @@ public class AppLayout extends Component implements RouterLayout {
      */
     @Override
     public void showRouterLayoutContent(HasElement content) {
-        final Component target = content.getElement().getComponent()
-            .orElseThrow(() -> new IllegalArgumentException(
-                "AppLayout content must be a Component"));
-
+        Component target = null;
+        if (content != null) {
+            target = content.getElement().getComponent().orElseThrow(
+                () -> new IllegalArgumentException(
+                    "AppLayout content must be a Component"));
+        }
         setContent(target);
     }
 
