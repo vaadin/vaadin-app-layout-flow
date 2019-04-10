@@ -68,6 +68,7 @@ public class AppLayoutTest {
     @Test
     public void removeContent() {
         testRemoval(systemUnderTest::setContent);
+        assertNull(systemUnderTest.getContent());
     }
 
     @Test

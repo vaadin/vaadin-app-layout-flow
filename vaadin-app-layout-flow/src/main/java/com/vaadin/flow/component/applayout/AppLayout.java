@@ -44,18 +44,41 @@ public class AppLayout extends Component implements RouterLayout {
 
     private Component content;
 
+    /**
+     * Defines how the navbar and the drawer will interact with each other on desktop view when the drawer is opened.
+     * <ul>
+     * <li>By default, the navbar takes the full available width and moves the drawer down.</li>
+     * <li>If drawer-first is set, then the drawer will move the navbar, taking the full available height.</li>
+     * </ul>
+     */
     public boolean isDrawerFirst() {
         return drawerFirstProperty.get(this);
     }
 
+    /**
+     * @see #isDrawerFirst
+     * @param drawerFirst new value for the drawerFirst property.
+     */
     public void setDrawerFirst(boolean drawerFirst) {
         drawerFirstProperty.set(this, drawerFirst);
     }
 
+    /**
+     * Controls whether the drawer is opened (visible) or not.
+     * Its default value depends on the viewport:
+     * <ul>
+     * <li>{@code true} for desktop size views</li>
+     * <li>{@code false} for mobile size views</li>
+     * </ul>
+     */
     public boolean isDrawerOpened() {
         return drawerOpenedProperty.get(this);
     }
 
+    /**
+     * @see #isDrawerOpened
+     * @param drawerOpened new value for the drawerOpened property.
+     */
     public void setDrawerOpened(boolean drawerOpened) {
         drawerOpenedProperty.set(this, drawerOpened);
     }
@@ -87,16 +110,36 @@ public class AppLayout extends Component implements RouterLayout {
         }
     }
 
+    /**
+     * Adds the components to the <em>drawer</em> slot of this AppLayout.
+     *
+     * @param components Components to add to the drawer slot.
+     * @throws NullPointerException if any of the components is null or if the components array is null.
+     */
     public void addToDrawer(Component... components) {
         addToSlot("drawer", components);
     }
 
+    /**
+     * Adds the components to the <em>navbar</em> slot of this AppLayout.
+     *
+     * @param components Components to add to the navbar slot.
+     * @throws NullPointerException if any of the components is null or if the components array is null.
+     */
     public void addToNavbar(Component... components) {
         addToSlot("navbar", components);
     }
 
+    /**
+     * Removes the child components from the parent. Components can be in any slot or be the main content.
+     *
+     * @param components Components to remove.
+     */
     public void remove(Component... components) {
         for (Component component : components) {
+            if(this.content != null && this.content.equals(component)) {
+                this.content = null;
+            }
             remove(component);
         }
     }
@@ -130,6 +173,11 @@ public class AppLayout extends Component implements RouterLayout {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if content is not a {@link Component}
+     */
     @Override
     public void showRouterLayoutContent(HasElement content) {
         final Component target = content.getElement().getComponent()
