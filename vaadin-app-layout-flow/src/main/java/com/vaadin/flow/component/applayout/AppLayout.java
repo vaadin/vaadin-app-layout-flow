@@ -86,6 +86,10 @@ public class AppLayout extends Component implements RouterLayout {
         drawerOpenedProperty.set(this, drawerOpened);
     }
 
+    /**
+     *  Drawer is an overlay on top of the content. This property is controlled
+     *  via CSS and can not be changed directly.
+     */
     @Synchronize("overlay-changed")
     public boolean isOverlay() {
         return overlayProperty.get(this);
