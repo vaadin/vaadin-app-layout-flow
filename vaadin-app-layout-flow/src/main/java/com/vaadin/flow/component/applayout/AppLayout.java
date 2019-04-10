@@ -46,11 +46,8 @@ public class AppLayout extends Component implements RouterLayout {
     private Component content;
 
     /**
-     * Defines how the navbar and the drawer will interact with each other on desktop view when the drawer is opened.
-     * <ul>
-     * <li>By default, the navbar takes the full available width and moves the drawer down.</li>
-     * <li>If drawer-first is set, then the drawer will move the navbar, taking the full available height.</li>
-     * </ul>
+     * @see #setDrawerFirst(boolean)
+     * @return value for the drawerFirst property. Default is {@code false}.
      */
     @Synchronize("drawer-first-changed")
     public boolean isDrawerFirst() {
@@ -58,7 +55,13 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * @see #isDrawerFirst
+     * Defines how the navbar and the drawer will interact with each other on desktop view when the drawer is opened.
+     *
+     * <ul>
+     * <li>By default, the navbar takes the full available width and moves the drawer down.</li>
+     * <li>If set to {@code true}, then the drawer will move the navbar, taking the full available height.</li>
+     * </ul>
+     *
      * @param drawerFirst new value for the drawerFirst property.
      */
     public void setDrawerFirst(boolean drawerFirst) {
@@ -66,12 +69,14 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * Controls whether the drawer is opened (visible) or not.
+     * Whether the drawer is opened (visible) or not.
      * Its default value depends on the viewport:
      * <ul>
      * <li>{@code true} for desktop size views</li>
      * <li>{@code false} for mobile size views</li>
      * </ul>
+     *
+     * @return {@code true} if the drawer is opened (visible). {@code false} otherwise.
      */
     @Synchronize("drawer-opened-changed")
     public boolean isDrawerOpened() {
@@ -79,16 +84,19 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * @see #isDrawerOpened
+     * Controls whether the drawer is visible or not.
+     *
      * @param drawerOpened new value for the drawerOpened property.
+     * @see #isDrawerOpened
      */
     public void setDrawerOpened(boolean drawerOpened) {
         drawerOpenedProperty.set(this, drawerOpened);
     }
 
     /**
-     *  Drawer is an overlay on top of the content. This property is controlled
-     *  via CSS and can not be changed directly.
+     *  <strong>Note:</strong> This property is controlled via CSS and can not be changed directly.
+     *
+     * @return {@code true} if drawer is an overlay on top of the content. {@code false} otherwise.
      */
     @Synchronize("overlay-changed")
     public boolean isOverlay() {
@@ -96,7 +104,7 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * Returns the displayed content
+     * @return the displayed content
      */
     public Component getContent() {
         return content;
