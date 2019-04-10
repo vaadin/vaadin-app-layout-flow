@@ -144,6 +144,20 @@ public class AppLayout extends Component implements RouterLayout {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if content is not a {@link Component}
+     */
+    @Override
+    public void showRouterLayoutContent(HasElement content) {
+        final Component target = content.getElement().getComponent()
+            .orElseThrow(() -> new IllegalArgumentException(
+                "AppLayout content must be a Component"));
+
+        setContent(target);
+    }
+
     private void addToSlot(String slot, Component... components) {
         for (Component component : components) {
             setSlot(component, slot);
@@ -171,19 +185,5 @@ public class AppLayout extends Component implements RouterLayout {
         if (component != null) {
             component.getElement().removeFromParent();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException if content is not a {@link Component}
-     */
-    @Override
-    public void showRouterLayoutContent(HasElement content) {
-        final Component target = content.getElement().getComponent()
-            .orElseThrow(() -> new IllegalArgumentException(
-                "AppLayout content must be a Component"));
-
-        setContent(target);
     }
 }
