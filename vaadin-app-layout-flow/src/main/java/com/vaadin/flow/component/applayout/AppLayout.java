@@ -55,11 +55,11 @@ public class AppLayout extends Component implements RouterLayout {
     }
 
     /**
-     * Defines how the navbar and the drawer will interact with each other on desktop view when the drawer is opened.
+     * Defines whether navbar or drawer will come first visually.
      *
      * <ul>
-     * <li>By default, the navbar takes the full available width and moves the drawer down.</li>
-     * <li>If set to {@code true}, then the drawer will move the navbar, taking the full available height.</li>
+     * <li>If {@link Section#NAVBAR}, the navbar takes the full available width and moves the drawer down. This is the default.</li>
+     * <li>If {@link Section#DRAWER} is set, then the drawer will move the navbar, taking the full available height.</li>
      * </ul>
      *
      * @param primarySection new value for the primarySection property.
@@ -233,6 +233,10 @@ public class AppLayout extends Component implements RouterLayout {
         }
     }
 
+    /**
+     * Sections in the component that can be used as primary.
+     * @see #setPrimarySection(Section)
+     */
     public enum Section {
         NAVBAR, DRAWER;
 
