@@ -29,6 +29,8 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.router.RouterLayout;
 
+import java.util.Objects;
+
 /**
  * Server-side component for the {@code <vaadin-app-layout>} element.
  * Provides a quick and easy way to get a common application layout.
@@ -62,12 +64,12 @@ public class AppLayout extends Component implements RouterLayout {
      * <li>If {@link Section#DRAWER} is set, then the drawer will move the navbar, taking the full available height.</li>
      * </ul>
      *
-     * @param primarySection new value for the primarySection property.
+     * @param primarySection new value for the primarySection property. Not {@code null}.
+     * @throws NullPointerException if primarySection is {@code null}.
      */
     public void setPrimarySection(Section primarySection) {
-        primarySectionProperty.set(this, primarySection != null ?
-            primarySection.toWebcomponentValue() :
-            null);
+        Objects.requireNonNull(primarySection, "primary section must not be null");
+        primarySectionProperty.set(this, primarySection.toWebcomponentValue());
     }
 
     /**
