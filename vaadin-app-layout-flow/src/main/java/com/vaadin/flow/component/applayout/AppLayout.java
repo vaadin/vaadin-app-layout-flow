@@ -27,6 +27,8 @@ import com.vaadin.flow.component.PropertyDescriptors;
 import com.vaadin.flow.component.Synchronize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.router.RouterLayout;
 
 import java.util.Objects;
@@ -36,7 +38,8 @@ import java.util.Objects;
  * Provides a quick and easy way to get a common application layout.
  */
 @Tag("vaadin-app-layout")
-@HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
+@NpmPackage(value = "@vaadin/vaadin-app-layout", version = "2.0.0-alpha4")
+@JsModule("@vaadin/vaadin-app-layout/vaadin-app-layout.js")
 public class AppLayout extends Component implements RouterLayout {
     private static final PropertyDescriptor<String, String> primarySectionProperty = PropertyDescriptors
         .propertyWithDefault("primarySection", Section.NAVBAR.toWebcomponentValue());

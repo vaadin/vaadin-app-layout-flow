@@ -1,6 +1,7 @@
 package com.vaadin.flow.component.applayout.testbench;
 
-import java.util.List;
+import com.vaadin.testbench.TestBenchElement;
+import com.vaadin.testbench.elementsbase.Element;
 
 /*
  * #%L
@@ -21,9 +22,6 @@ import java.util.List;
  * limitations under the License.
  * #L%
  */
-
-import com.vaadin.testbench.TestBenchElement;
-import com.vaadin.testbench.elementsbase.Element;
 
 @Element("vaadin-app-layout")
 public class AppLayoutElement extends TestBenchElement {
