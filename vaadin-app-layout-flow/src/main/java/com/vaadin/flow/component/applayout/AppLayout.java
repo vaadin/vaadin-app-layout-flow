@@ -40,7 +40,7 @@ import java.util.Objects;
 @Tag("vaadin-app-layout")
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
 @NpmPackage(value = "@vaadin/vaadin-app-layout", version = "2.0.0-alpha4")
-@JsModule("@vaadin/vaadin-app-layout/vaadin-app-layout.js")
+@JsModule("@vaadin/vaadin-app-layout/src/vaadin-app-layout.js")
 public class AppLayout extends Component implements RouterLayout {
     private static final PropertyDescriptor<String, String> primarySectionProperty = PropertyDescriptors
         .propertyWithDefault("primarySection", Section.NAVBAR.toWebcomponentValue());
