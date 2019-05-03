@@ -1,8 +1,5 @@
 package com.vaadin.flow.component.applayout.testbench;
 
-import com.vaadin.testbench.TestBenchElement;
-import com.vaadin.testbench.elementsbase.Element;
-
 /*
  * #%L
  * Vaadin App Layout Testbench API
@@ -22,6 +19,9 @@ import com.vaadin.testbench.elementsbase.Element;
  * limitations under the License.
  * #L%
  */
+
+import com.vaadin.testbench.TestBenchElement;
+import com.vaadin.testbench.elementsbase.Element;
 
 @Element("vaadin-app-layout")
 public class AppLayoutElement extends TestBenchElement {
