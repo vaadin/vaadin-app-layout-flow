@@ -23,28 +23,27 @@ public class AppLayoutView extends DemoView {
         addCard("App Layout usage in a demo application",
                 new Div(new Label("Try out the demo which is using the `vaadin-app-layout-flow` component. "),
                         new Anchor("https://bakery-flow.demo.vaadin.com/login", "Open demo.")));
-        appLayoutBasic();
+        addCard("Basic App Layout");
         appLayoutDrawerPrimary();
         appLayoutInMobile();
         appLayoutInMainView();
     }
 
-    private void appLayoutBasic() {
-        // @formatter:off
-        // begin-source-example
-        // source-example-heading: Basic App Layout
-        AppLayout appLayout = new AppLayout();
-        Image img = new Image("https://i.imgur.com/GPpnszs.png", "Vaadin Logo");
-        img.setHeight("44px");
-        appLayout.addToNavbar(new DrawerToggle(), img);
-        Tabs tabs = new Tabs(new Tab("Home"), new Tab("About"));
-        tabs.setOrientation(Tabs.Orientation.VERTICAL);
-        appLayout.addToDrawer(tabs);
-        // end-source-example
-        // @formatter:on
-
-        addCard("Basic App Layout");
+    // @formatter:off
+    // begin-source-example
+    // source-example-heading: Basic App Layout
+    public class BasicAppLayoutView extends AppLayout {
+        public BasicAppLayoutView() {
+            Image img = new Image("https://i.imgur.com/GPpnszs.png", "Vaadin Logo");
+            img.setHeight("44px");
+            addToNavbar(new DrawerToggle(), img);
+            Tabs tabs = new Tabs(new Tab("Home"), new Tab("About"));
+            tabs.setOrientation(Tabs.Orientation.VERTICAL);
+            addToDrawer(tabs);
+        }
     }
+    // end-source-example
+    // @formatter:on
 
     private void appLayoutDrawerPrimary() {
         // @formatter:off
