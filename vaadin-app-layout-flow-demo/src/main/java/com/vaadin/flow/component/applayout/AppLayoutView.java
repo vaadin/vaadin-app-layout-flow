@@ -1,7 +1,7 @@
 package com.vaadin.flow.component.applayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Anchor;
@@ -13,8 +13,8 @@ import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.demo.DemoView;
-import com.vaadin.flow.router.AfterNavigationEvent;
-import com.vaadin.flow.router.AfterNavigationObserver;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
@@ -105,13 +105,10 @@ public class AppLayoutView extends DemoView {
     // @formatter:off
     // begin-source-example
     // source-example-heading: App layout with RouterLink
-    public class MainView extends AppLayout implements AfterNavigationObserver {
+    public class MainView extends AppLayout implements BeforeEnterObserver {
 
         private Tabs tabs = new Tabs();
-        // List will contain all the hrefs in the same order as they were added to tabs
-        // ["", "admin", "dashboard"]
-        // index is used to setSelectedIndex on afterNavigation
-        private List<String> hrefs = new ArrayList<>();
+        private Map<Class<? extends Component>, Tab> navigationTargetToTab = new HashMap<>();
 
         public MainView() {
             addMenuTab("Main", DefaultView.class);
@@ -122,16 +119,15 @@ public class AppLayoutView extends DemoView {
             addToNavbar(new DrawerToggle());
         }
 
-        private void addMenuTab(String text, Class<? extends Component> navigationTarget) {
-            //Each tab will contain a RouterLink that navigates to the navigationTarget
-            RouterLink link = new RouterLink(text, navigationTarget);
-            hrefs.add(link.getHref());
-            tabs.add(new Tab(link));
+        private void addMenuTab(String label, Class<? extends Component> target) {
+            Tab tab = new Tab(new RouterLink(label, target));
+            navigationTargetToTab.put(target, tab);
+            tabs.add(tab);
         }
 
         @Override
-        public void afterNavigation(AfterNavigationEvent event) {
-            tabs.setSelectedIndex(hrefs.indexOf(event.getLocation().getFirstSegment()));
+        public void beforeEnter(BeforeEnterEvent event) {
+            tabs.setSelectedTab(navigationTargetToTab.get(event.getNavigationTarget()));
         }
     }
 
