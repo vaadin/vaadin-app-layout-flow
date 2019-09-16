@@ -1,6 +1,6 @@
 language: java
 jdk: oraclejdk8
-dist: trusty
+dist: xenial
 
 script:
   - if mvn dependency:tree | grep -B3 "version selected from constraint"; then
