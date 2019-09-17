@@ -1,13 +1,13 @@
 language: java
-jdk: oraclejdk8
-dist: trusty
+jdk: openjdk8
+dist: xenial
 
 script:
   - if mvn dependency:tree | grep -B3 "version selected from constraint"; then
       echo "Error. Have found versions that are selected from constraint, pin those so they won't change themselves.";
       exit 1;
     fi;
-  - mvn -B clean verify -Dvaadin.productionMode -Dcom.vaadin.testbench.Parameters.testsInParallel=2 -Dvaadin.proKey=$VAADIN_PRO_KEY -Dsauce.user=$SAUCE_USER -Dsauce.sauceAccessKey=$SAUCE_ACCESSKEY -P$IT_PROFILE
+  - xvfb-run  --server-args="-screen 0 1024x768x24" mvn -B clean verify -Dvaadin.productionMode -Dcom.vaadin.testbench.Parameters.testsInParallel=2 -Dvaadin.proKey=$VAADIN_PRO_KEY -Dsauce.user=$SAUCE_USER -Dsauce.sauceAccessKey=$SAUCE_ACCESSKEY -P$IT_PROFILE
 
 #deploy:
 #  - provider: script
