@@ -9,13 +9,14 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.IFrame;
 import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 
@@ -28,13 +29,24 @@ public class AppLayoutView extends DemoView {
                 "Try out the demo which is using the `vaadin-app-layout-flow` component. "),
                 new Anchor("https://bakery-flow.demo.vaadin.com/login",
                         "Open demo.")));
-        addCard("App layout with nabvar menu");
-        addCard("App layout with drawer menu");
-        addCard("App layout in mobile");
-        addCard("App layout as main view for PWA");
-        addCard("Routing example", "App layout with RouterLink");
+        addCard("App layout with nabvar menu",getExampleIframe("/applayoutnavbarmenu"));
+        addCard("App layout with drawer menu",getExampleIframe("/applayoutdrawermenu"));
+        addCard("App layout in mobile",getExampleIframe("/applayoutmobile"));
+        addCard("App layout as main view for PWA",getExampleIframe("/applayoutpwa"));
+        addCard("Routing example", "App layout with RouterLink",getExampleIframe("/applayoutrouting"));
     }
 
+    private IFrame getExampleIframe(String route){
+        IFrame iframe=new IFrame();
+        iframe.getElement().getStyle().set("width","100%");
+        iframe.getElement().getStyle().set("height","100%");
+        iframe.getElement().getStyle().set("border-width","0px");
+        iframe.setSrc(route);
+        return iframe;
+    }
+
+    @Route("applayoutnavbarmenu")
+    static
     // @formatter:off
     // begin-source-example
     // source-example-heading: App layout with nabvar menu
@@ -49,6 +61,8 @@ public class AppLayoutView extends DemoView {
     // end-source-example
     // @formatter:on
 
+    @Route("applayoutdrawermenu")
+    static
     // @formatter:off
     // begin-source-example
     // source-example-heading: App layout with drawer menu
@@ -65,7 +79,8 @@ public class AppLayoutView extends DemoView {
     }
     // end-source-example
     // @formatter:on
-
+    @Route("applayoutmobile")
+    static
     // @formatter:off
     // begin-source-example
     // source-example-heading: App layout in mobile
@@ -82,13 +97,14 @@ public class AppLayoutView extends DemoView {
     }
     // end-source-example
     // @formatter:on
-
+    @Route("applayoutpwa")
+    static
     // @formatter:off
     // begin-source-example
     // source-example-heading: App layout as main view for PWA
     @Viewport("width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes, viewport-fit=cover")
     @PWA(name = "My Application", shortName = "My App")
-    class MainAppView extends AppLayout {
+    public class MainAppView extends AppLayout {
 
         public MainAppView() {
             Image img = new Image("https://i.imgur.com/GPpnszs.png", "Vaadin Logo");
