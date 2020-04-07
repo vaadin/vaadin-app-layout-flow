@@ -14,7 +14,8 @@ vaadin-app-layout-integration-tests/src/test/resources/webdriver
 .vscode/*
 
 # The following files are generated/updated by flow-maven-plugin
-package.json
-webpack.config.js
-webpack.generated.js
+package*.json
+webpack.*.js
+tsconfig.json
+types.d.ts
 node_modules/
