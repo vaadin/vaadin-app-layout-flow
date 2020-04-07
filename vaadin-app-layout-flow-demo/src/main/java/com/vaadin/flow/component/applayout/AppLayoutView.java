@@ -28,10 +28,17 @@ public class AppLayoutView extends DemoView {
                 "Try out the demo which is using the `vaadin-app-layout-flow` component. "),
                 new Anchor("https://bakery-flow.demo.vaadin.com/login",
                         "Open demo.")));
-        addCard("App layout with nabvar menu");
-        addCard("App layout with drawer menu");
-        addCard("App layout in mobile");
-        addCard("App layout as main view for PWA");
+        addCard("App layout with nabvar menu",
+                configureImage("./img/appLayoutWithNavbar.png",
+                        "AppLayout with Navbar"));
+        addCard("App layout with drawer menu",
+                configureImage("./img/appLayoutWithDrawer.png",
+                        "AppLayout with Drawer"));
+        addCard("App layout in mobile",
+                configureImage("./img/appLayoutInMobile.png",
+                        "AppLayoit Mobile view", true));
+        addCard("App layout as main view for PWA",
+                configureImage("./img/mainAppView.png", " AppLayout for PWA"));
         addCard("Routing example", "App layout with RouterLink");
     }
 
@@ -153,4 +160,14 @@ public class AppLayoutView extends DemoView {
     }
     // end-source-example
     // @formatter:on
+
+    private Image configureImage(String src, String alt, boolean... mobile) {
+        Image img = new Image(src, alt);
+        img.setSizeFull();
+        if (mobile.length != 0) {
+            img.setMaxWidth("150px");
+            img.setMaxHeight("250px");
+        }
+        return img;
+    }
 }
