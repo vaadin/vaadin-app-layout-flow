@@ -4,7 +4,7 @@
 Vaadin App Layout is a component providing a quick and easy way to get a common application layout structure done.
 
 ⚠️ **This repository is deprecated**
-- Sources for this flow component can be found at https://github.com/vaadin/vaadin-flow-component
+- Sources for this flow component can be found at https://github.com/vaadin/vaadin-flow-components
 - Tickets has been moved to the web component repository https://github.com/vaadin/vaadin-app-layout/issues
 
 ### License & Author
